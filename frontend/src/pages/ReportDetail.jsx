@@ -5,6 +5,7 @@ const ReportDetail = () => {
   const navigate = useNavigate();
   const location = useLocation();
   
+  // 목록(Report.jsx)에서 넘겨준 데이터 받기
   const { videoFile, videoSrc, reportId, ...prevData } = location.state || {};
   
   const [resultData, setResultData] = useState(prevData.plate ? prevData : null);
@@ -30,7 +31,7 @@ const ReportDetail = () => {
             ...finalData,
             title: finalData.violation || item.title,
             status: newStatus,
-            // ★ 서버에서 받은 시간(time)을 목록에도 저장
+            // 서버에서 받은 시간(time)을 목록에도 저장
             date: finalData.time || item.date,
             plate: finalData.plate || item.plate
           };
@@ -57,9 +58,11 @@ const ReportDetail = () => {
       const timer2 = setTimeout(() => addLog("🚗 차량 및 번호판 인식 시도 중..."), 3500);
       const timer3 = setTimeout(() => addLog("⚖️ 도로교통법 위반 여부 판단 중..."), 5500);
 
-      const res = await fetch('http://localhost:8000/api/analyze-video', {
+      // 👇 [수정됨] 주소 변경(/api/analyze-direct) 및 credentials 옵션 추가
+      const res = await fetch('http://localhost:8000/api/analyze-direct', {
         method: 'POST',
-        body: formData
+        body: formData,
+        credentials: 'include' // 👈 ★ 핵심: 이게 있어야 로그인 ID가 파이썬 서버로 전달됨
       });
 
       clearTimeout(timer1); clearTimeout(timer2); clearTimeout(timer3);
@@ -68,7 +71,7 @@ const ReportDetail = () => {
         const data = await res.json();
         addLog("✅ 분석 완료!");
         
-        // ★ [핵심] 서버 응답값 매핑 수정 ★
+        // ★ [핵심] 서버 응답값 매핑
         const finalResult = {
             // 서버는 'plate'로 줌
             plate: data.plate || "식별불가",
@@ -170,7 +173,7 @@ const ReportDetail = () => {
 
                 <div style={{ padding: '16px' }}>
                   <div style={{ fontSize: '12px', fontWeight: '600', color: 'var(--text-primary)', marginBottom: '8px' }}>신고 일시</div>
-                  {/* ★ data.time 값이 여기에 들어감 (이제 비어있지 않을 겁니다) */}
+                  {/* data.time 값이 여기에 들어감 */}
                   <div style={{ padding: '12px', background: 'var(--bg-gray)', borderRadius: '12px', fontSize: '13px', color: 'var(--text-primary)' }}>
                     {resultData.time}
                   </div>

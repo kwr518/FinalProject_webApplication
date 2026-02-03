@@ -5,20 +5,10 @@ const Report = () => {
   const fileInputRef = useRef(null);
   const navigate = useNavigate();
   
-  // 1. 초기 상태 로드 (새로고침 시 무한 스피너 방지 로직 유지)
   const [reports, setReports] = useState(() => {
     const saved = localStorage.getItem('myReports');
-    const parsed = saved ? JSON.parse(saved) : [
-      {
-        id: 1,
-        title: '신호 위반',
-        date: '2026-02-12 14:32',
-        plate: '12가 3456',
-        status: 'complete',
-        desc: '적색 신호에 교차로 진입함.'
-      }
-    ];
-
+    const parsed = saved ? JSON.parse(saved) : [];
+    // 처리 중이던 건 오류로 처리 (새로고침 대응)
     return parsed.map(item => {
         if (item.status === 'processing') {
             return {
@@ -32,20 +22,34 @@ const Report = () => {
     });
   });
 
-  // 상태 변경 시 로컬 스토리지 저장
   useEffect(() => {
     localStorage.setItem('myReports', JSON.stringify(reports));
   }, [reports]);
 
-  // ★ 삭제 기능 함수 추가
-  const deleteReport = (e, id) => {
-    e.stopPropagation(); // 카드 클릭(상세이동) 이벤트가 발생하지 않게 막음
-    if (window.confirm('이 신고 내역을 삭제하시겠습니까?')) {
+  // ★ [핵심] S3 삭제 + 목록 삭제 함수
+  const deleteReport = async (e, id, filename) => {
+    e.stopPropagation(); 
+    
+    if (window.confirm('이 신고 내역을 삭제하시겠습니까?\n(서버의 영상 파일도 함께 삭제됩니다)')) {
+      
+      // 1. 만약 파일명이 있다면 서버에 삭제 요청 (분석 완료된 건)
+      if (filename) {
+          try {
+              await fetch(`http://localhost:8000/api/delete-video?filename=${filename}`, {
+                  method: 'DELETE',
+                  credentials: 'include' // 로그인 정보 전송
+              });
+              console.log("서버 파일 삭제 요청 완료");
+          } catch (err) {
+              console.error("서버 파일 삭제 중 오류 (무시하고 목록 삭제 진행):", err);
+          }
+      }
+
+      // 2. 화면 목록에서 삭제
       setReports(prev => prev.filter(item => item.id !== id));
     }
   };
 
-  // 아이템 상태 업데이트 헬퍼
   const updateItemStatus = (id, newStatus, message, finalData = null) => {
     setReports(prev => prev.map(item => {
       if (item.id === id) {
@@ -67,9 +71,11 @@ const Report = () => {
       const formData = new FormData();
       formData.append("file", file);
 
-      const res = await fetch('http://localhost:8000/api/analyze-video', {
+      // ★ [확인] 주소와 옵션이 제대로 되어있는지 확인
+      const res = await fetch('http://localhost:8000/api/analyze-direct', {
         method: 'POST',
-        body: formData
+        body: formData,
+        credentials: 'include'
       });
 
       if (res.ok) {
@@ -83,10 +89,12 @@ const Report = () => {
                     status: 'complete',
                     title: violationTitle,
                     plate: data.plate || '식별불가',
-                    date: data.time, // 목록용 날짜
-                    time: data.time, // 상세페이지용 날짜
+                    date: data.time,
+                    time: data.time,
                     desc: data.result,
-                    videoSrc: URL.createObjectURL(file)
+                    videoSrc: URL.createObjectURL(file),
+                    // ★ [중요] 삭제를 위해 파일명을 여기에 저장해둡니다!
+                    filename: file.name 
                 };
             }
             return item;
@@ -115,7 +123,8 @@ const Report = () => {
       plate: '-',
       status: 'processing', 
       progressMsg: '서버 연결 대기 중...',
-      videoSrc: null
+      videoSrc: null,
+      filename: file.name // 초기 생성 시에도 파일명 저장
     };
 
     setReports([newReport, ...reports]); 
@@ -223,11 +232,10 @@ const Report = () => {
                   )}
               </div>
 
-              {/* 우측 상태 뱃지 및 삭제 버튼 영역 */}
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '8px' }}>
-                  {/* ★ 삭제 버튼 */}
+                  {/* ★ 삭제 버튼: 클릭 시 파일명(report.filename)을 함께 넘김 */}
                   <div 
-                    onClick={(e) => deleteReport(e, report.id)}
+                    onClick={(e) => deleteReport(e, report.id, report.filename)}
                     style={{ 
                         cursor: 'pointer', 
                         color: '#94A3B8', 
