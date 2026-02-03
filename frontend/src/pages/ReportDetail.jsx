@@ -8,7 +8,11 @@ const ReportDetail = () => {
   // 목록에서 넘어온 데이터 (DB 데이터 포함)
   const { videoFile, videoSrc, reportId, ...prevData } = location.state || {};
   
+  // 결과 데이터 상태
   const [resultData, setResultData] = useState(prevData.plate ? prevData : null);
+  // 상세 내용 (AI 초안 또는 사용자 수정본)
+  const [detailContent, setDetailContent] = useState(''); 
+  
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [progressLogs, setProgressLogs] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -17,7 +21,7 @@ const ReportDetail = () => {
     setProgressLogs(prev => [...prev, message]);
   }, []);
 
-  // 목록 업데이트 (로컬 스토리지/전역 상태 동기화용)
+  // 목록 업데이트 (로컬 스토리지 동기화)
   const updateReportList = useCallback((finalData, newStatus = 'complete') => {
     if (!reportId) return;
 
@@ -31,13 +35,12 @@ const ReportDetail = () => {
             ...finalData,
             title: finalData.violation || item.title,
             status: newStatus,
-            date: finalData.date || item.date,
-            plate: finalData.plate || item.plate,
-            // ★ 상세 정보 업데이트
+            // 상세 정보 업데이트
             incidentDate: finalData.incidentDate,
             incidentTime: finalData.incidentTime,
-            aiDraft: finalData.aiDraft,
-            location: finalData.location // ★ 위치 정보 저장
+            location: finalData.location,
+            plate: finalData.plate,
+            detailContent: finalData.detailContent // 수정된 내용 저장
           };
         }
         return item;
@@ -62,13 +65,15 @@ const ReportDetail = () => {
       const timer1 = setTimeout(() => addLog("👀 AI가 영상을 프레임 단위로 쪼개는 중..."), 1500);
       const timer2 = setTimeout(() => addLog("🚗 차량 및 번호판 인식 시도 중..."), 3500);
       const timer3 = setTimeout(() => addLog("⚖️ 도로교통법 위반 여부 판단 중..."), 5500);
+      const timer4 = setTimeout(() => addLog("📝 LLM이 신고 초안을 작성하는 중..."), 7000);
 
       const res = await fetch('http://localhost:8000/api/analyze-video', {
         method: 'POST',
         body: formData
       });
 
-      clearTimeout(timer1); clearTimeout(timer2); clearTimeout(timer3);
+      clearTimeout(timer1); clearTimeout(timer2); 
+      clearTimeout(timer3); clearTimeout(timer4);
 
       if (res.ok) {
         const data = await res.json();
@@ -76,68 +81,87 @@ const ReportDetail = () => {
         
         // 시간 파싱 (YYYY-MM-DD HH:MM:SS 형식 가정)
         const rawTime = data.time || "";
-        const [datePart, timePart] = rawTime.split(' ');
+        const [datePart, timePart] = rawTime.includes(' ') ? rawTime.split(' ') : [new Date().toISOString().split('T')[0], "00:00:00"];
+
+        // AI 리포트 내용 가져오기
+        const aiGeneratedDraft = data.ai_report || `[AI 자동 생성 초안]
+위반 내용: ${data.result || '위반 감지'}
+차량 번호: ${data.plate || '식별불가'}
+
+상세 내용:
+위 차량이 교통법규를 위반하는 장면이 확인되었습니다.`;
 
         const finalResult = {
             plate: data.plate || "식별불가",
-            // ★ 날짜/시간 분리 저장
-            incidentDate: datePart || new Date().toISOString().split('T')[0],
-            incidentTime: timePart || new Date().toTimeString().split(' ')[0],
-            
+            incidentDate: datePart,
+            incidentTime: timePart,
+            location: "위치 정보 없음", // 추후 GPS 연동 가능
             desc: data.result || "위반 사항이 감지되지 않았습니다.",
             violation: data.result ? data.result.split('(')[0].trim() : "위반 감지",
-            
-            // ★ AI 초안 및 위치 (새 분석 시 기본값)
-            aiDraft: "",
-            location: "위치 정보 없음" 
+            detailContent: aiGeneratedDraft
         };
         
         setResultData(finalResult);
+        setDetailContent(aiGeneratedDraft);
         updateReportList(finalResult, 'complete');
         
       } else {
-        addLog("❌ 분석 실패");
-        const mockResult = {
-            plate: "식별불가",
-            incidentDate: new Date().toISOString().split('T')[0],
-            incidentTime: "00:00:00",
-            desc: "서버 연결 실패. (네트워크 오류)",
-            violation: "분석 실패",
-            aiDraft: "",
-            location: "-"
-        };
-        setResultData(mockResult);
-        updateReportList(mockResult, 'complete');
+        throw new Error("분석 실패");
       }
 
     } catch (error) {
       console.error(error);
-      addLog("❌ 네트워크 에러");
+      addLog("❌ 분석 실패 또는 네트워크 오류");
+      
+      const errorResult = {
+          plate: "식별불가",
+          incidentDate: new Date().toISOString().split('T')[0],
+          incidentTime: "00:00:00",
+          desc: "서버 연결 실패",
+          violation: "분석 실패",
+          detailContent: "네트워크 오류로 인해 초안을 생성할 수 없습니다. 수동으로 작성해주세요."
+      };
+      setResultData(errorResult);
+      setDetailContent(errorResult.detailContent);
+      updateReportList(errorResult, 'complete');
+      
     } finally {
       setIsAnalyzing(false);
     }
   }, [videoFile, addLog, updateReportList]);
 
-  // 자동 실행
+  // 자동 실행 (처음 진입 시)
   useEffect(() => {
     if (videoFile && !resultData && !isAnalyzing) {
       startAnalysis();
     }
   }, [videoFile, resultData, isAnalyzing, startAnalysis]);
 
-  const handleSubmit = () => {
-    // 실제 제출 로직
-    if (resultData) {
-        updateReportList(resultData, 'submitted'); 
+  // 기존 데이터 로드 (상세 내용이 있다면)
+  useEffect(() => {
+    if (prevData && prevData.detailContent) {
+      setDetailContent(prevData.detailContent);
     }
-    alert('보고서 작성 페이지로 이동합니다. (구현 예정)');
+  }, [prevData]);
+
+  // 최종 제출 핸들러
+  const handleSubmit = () => {
+    if (resultData) {
+        const updatedData = {
+          ...resultData,
+          detailContent: detailContent
+        };
+        updateReportList(updatedData, 'submitted'); 
+    }
+    alert('신고가 안전신문고 양식으로 제출되었습니다.');
     setShowModal(false);
+    navigate('/report');
   };
 
   return (
     <div className="screen active">
       <div className="header">
-        <h1>신고 상세</h1>
+        <h1>📄 신고 상세</h1>
         <p>AI 분석 리포트</p>
       </div>
 
@@ -148,104 +172,148 @@ const ReportDetail = () => {
             <video 
               src={videoSrc} 
               width="100%" 
-              height="200" 
+              height="220" 
               controls 
-              style={{ background: 'black', borderRadius: '12px', margin: '16px 0', display: 'block' }}
+              style={{ 
+                background: 'var(--bg-dark)', 
+                borderRadius: 'var(--radius-lg)', 
+                margin: '20px', 
+                width: 'calc(100% - 40px)',
+                display: 'block',
+                boxShadow: 'var(--shadow-md)'
+              }}
             ></video>
           ) : (
-            <div style={{ padding: '20px', textAlign: 'center', background: '#f1f5f9', margin:'16px', borderRadius:'12px', color:'#64748B' }}>
-                📸 분석 이미지/영상 없음
+            <div style={{ 
+              padding: '40px', 
+              textAlign: 'center', 
+              background: 'var(--bg-tertiary)', 
+              margin:'20px', 
+              borderRadius:'var(--radius-lg)',
+              border: '2px dashed var(--border-medium)'
+            }}>
+                <div style={{ fontSize: '48px', marginBottom: '12px' }}>📸</div>
+                <div style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>
+                  분석 영상 없음
+                </div>
             </div>
           )}
         </div>
 
-        {/* 분석 로그 */}
+        {/* 분석 로그 (분석 중일 때만 표시) */}
         {isAnalyzing && (
-            <div style={{ margin: '0 16px 16px 16px', padding: '16px', background: '#1E293B', borderRadius: '12px', fontFamily: 'monospace', fontSize: '12px', color: '#10B981', height: '120px', overflowY: 'auto' }}>
+            <div style={{ 
+              margin: '0 20px 20px 20px', 
+              padding: '20px', 
+              background: 'var(--bg-dark)', 
+              borderRadius: 'var(--radius-lg)', 
+              fontFamily: 'monospace', 
+              fontSize: '13px', 
+              color: 'var(--success-green)', 
+              height: '160px', 
+              overflowY: 'auto',
+              boxShadow: 'var(--shadow-md)'
+            }}>
                 {progressLogs.map((log, i) => (
-                    <div key={i} style={{ marginBottom: '4px' }}>&gt; {log}</div>
+                    <div key={i} style={{ marginBottom: '6px', lineHeight: '1.6' }}>&gt; {log}</div>
                 ))}
                 <div className="blink-cursor">_</div>
             </div>
         )}
 
-        {/* 결과 표시 영역 */}
+        {/* 결과 표시 영역 (분석 완료 시) */}
         {!isAnalyzing && resultData && (
             <>
-                <div style={{ padding: '0 16px 16px 16px' }}>
-                  {/* 위반 내용 */}
-                  <div style={{ marginBottom: '16px' }}>
-                    <div style={{ fontSize: '12px', fontWeight: '600', color: 'var(--text-primary)', marginBottom: '6px' }}>위반 내용</div>
-                    <div style={{ padding: '12px', background: 'var(--bg-gray)', borderRadius: '12px', fontSize: '14px', fontWeight:'bold', color: 'var(--text-primary)' }}>
-                      {resultData.desc}
-                    </div>
+                <div style={{ padding: '0 20px' }}>
+                  {/* 위반 내용 카드 */}
+                  <div style={{ padding: '20px', marginBottom: '16px', background: 'linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-light)' }}>
+                    <div style={{ fontSize: '12px', fontWeight: '600', color: 'var(--text-secondary)', marginBottom: '8px', textTransform: 'uppercase' }}>위반 내용</div>
+                    <div style={{ fontSize: '16px', fontWeight: '700', color: 'var(--text-primary)' }}>{resultData.desc}</div>
                   </div>
 
-                  {/* ★ [추가] 위반 장소 (위반 내용과 차량 번호 사이) */}
-                  <div style={{ marginBottom: '16px' }}>
-                    <div style={{ fontSize: '12px', fontWeight: '600', color: 'var(--text-primary)', marginBottom: '6px' }}>위반 장소</div>
-                    <div style={{ padding: '12px', background: 'var(--bg-gray)', borderRadius: '12px', fontSize: '14px', color: 'var(--text-primary)' }}>
-                      {resultData.location || "위치 정보 없음"}
-                    </div>
+                  {/* 차량 번호 카드 */}
+                  <div style={{ padding: '20px', marginBottom: '16px', background: 'linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-light)', textAlign: 'center' }}>
+                    <div style={{ fontSize: '12px', fontWeight: '600', color: 'var(--text-secondary)', marginBottom: '8px', textTransform: 'uppercase' }}>차량 번호</div>
+                    <div style={{ fontSize: '24px', fontWeight: '800', color: 'var(--text-primary)', letterSpacing: '2px' }}>{resultData.plate}</div>
                   </div>
 
-                  {/* 차량 번호 */}
-                  <div style={{ marginBottom: '16px' }}>
-                    <div style={{ fontSize: '12px', fontWeight: '600', color: 'var(--text-primary)', marginBottom: '6px' }}>차량 번호</div>
-                    <div style={{ padding: '12px', background: 'var(--bg-gray)', borderRadius: '12px', fontSize: '14px', color: 'var(--text-primary)' }}>
-                      {resultData.plate}
-                    </div>
-                  </div>
-
-                  {/* 신고 일자/시각 분리 표시 */}
+                  {/* 일시 및 장소 (2열 배치) */}
                   <div style={{ display: 'flex', gap: '12px', marginBottom: '16px' }}>
-                    <div style={{ flex: 1 }}>
-                        <div style={{ fontSize: '12px', fontWeight: '600', color: 'var(--text-primary)', marginBottom: '6px' }}>신고 일자</div>
-                        <div style={{ padding: '12px', background: 'var(--bg-gray)', borderRadius: '12px', fontSize: '13px', color: 'var(--text-primary)' }}>
-                            {resultData.incidentDate || "날짜 정보 없음"}
-                        </div>
+                    <div style={{ flex: 1, padding: '16px', background: 'var(--bg-secondary)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-light)' }}>
+                        <div style={{ fontSize: '11px', color: 'var(--text-secondary)', marginBottom: '4px' }}>위반 일자</div>
+                        <div style={{ fontSize: '13px', fontWeight: '600' }}>{resultData.incidentDate}</div>
                     </div>
-                    <div style={{ flex: 1 }}>
-                        <div style={{ fontSize: '12px', fontWeight: '600', color: 'var(--text-primary)', marginBottom: '6px' }}>신고 시각</div>
-                        <div style={{ padding: '12px', background: 'var(--bg-gray)', borderRadius: '12px', fontSize: '13px', color: 'var(--text-primary)' }}>
-                            {resultData.incidentTime || "시간 정보 없음"}
-                        </div>
+                    <div style={{ flex: 1, padding: '16px', background: 'var(--bg-secondary)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-light)' }}>
+                        <div style={{ fontSize: '11px', color: 'var(--text-secondary)', marginBottom: '4px' }}>위반 시각</div>
+                        <div style={{ fontSize: '13px', fontWeight: '600' }}>{resultData.incidentTime}</div>
                     </div>
                   </div>
 
-                  {/* AI 분석 초안 */}
-                  <div style={{ marginBottom: '24px' }}>
-                    <div style={{ fontSize: '12px', fontWeight: '600', color: 'var(--text-primary)', marginBottom: '6px', display:'flex', justifyContent:'space-between' }}>
-                        <span>AI 분석 초안</span>
-                        <span style={{ fontSize: '11px', color:'#3B82F6' }}>자동 생성됨 ✨</span>
+                  {/* 상세 내용 (초안 작성) - 수정 가능 */}
+                  <div style={{ marginBottom: '20px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
+                        <span style={{ fontSize: '13px', fontWeight: '600', color: 'var(--text-secondary)' }}>상세 내용 (AI 초안)</span>
+                        <span style={{ fontSize: '10px', background: 'var(--warning-light)', color: 'var(--warning-orange)', padding: '2px 8px', borderRadius: '99px', fontWeight: '700' }}>수정 가능</span>
                     </div>
-                    <div style={{ padding: '12px', background: '#F0F9FF', border:'1px solid #BAE6FD', borderRadius: '12px', fontSize: '13px', lineHeight: '1.6', color: '#0369A1', whiteSpace: 'pre-wrap' }}>
-                      {resultData.aiDraft ? resultData.aiDraft : "(AI가 생성한 초안 내용이 없습니다.)"}
+                    <textarea
+                      value={detailContent}
+                      onChange={(e) => setDetailContent(e.target.value)}
+                      style={{ 
+                        width: '100%',
+                        minHeight: '200px',
+                        padding: '16px', 
+                        background: 'var(--bg-primary)', 
+                        borderRadius: 'var(--radius-lg)', 
+                        fontSize: '14px', 
+                        lineHeight: '1.6', 
+                        color: 'var(--text-primary)',
+                        border: '2px solid var(--border-light)',
+                        fontFamily: 'inherit',
+                        resize: 'vertical'
+                      }}
+                      placeholder="상세 내용을 입력하세요..."
+                    />
+                    <div style={{ fontSize: '11px', color: 'var(--text-tertiary)', marginTop: '8px', fontStyle: 'italic' }}>
+                      💡 Tip: AI가 생성한 초안을 자유롭게 수정하여 신고서를 완성하세요.
                     </div>
                   </div>
 
-                  <button className="btn btn-primary" onClick={() => setShowModal(true)}>
-                    보고서 작성
+                  <button className="btn btn-primary" onClick={() => setShowModal(true)} style={{ width: '100%', margin: '0 0 12px 0' }}>
+                    신고 제출하기
                   </button>
                 </div>
             </>
         )}
         
-        <div style={{ padding: '0 16px 16px 16px' }}>
-            <button className="btn" style={{ background: 'var(--bg-gray)', color: 'var(--text-primary)', width: '100%' }} onClick={() => navigate('/report')}>
-                뒤로
-            </button>
+        <div style={{ padding: '0 20px 20px 20px' }}>
+          <button 
+            className="btn" 
+            style={{ 
+              background: 'var(--bg-tertiary)', 
+              color: 'var(--text-primary)', 
+              width: '100%', 
+              margin: 0,
+              border: '1px solid var(--border-light)'
+            }} 
+            onClick={() => navigate('/report')}
+          >
+            목록으로 돌아가기
+          </button>
         </div>
       </div>
 
+      {/* 제출 확인 모달 */}
       {showModal && (
         <div className="modal active">
           <div className="modal-content">
-            <div className="modal-title">보고서 작성</div>
-            <div className="modal-desc">이 내용으로 신고 보고서를 작성하시겠습니까?</div>
+            <div className="modal-title">✅ 제출 확인</div>
+            <div className="modal-desc">
+              작성된 내용으로 신고를 접수하시겠습니까?<br/>
+              제출 후에는 수정이 불가능합니다.
+            </div>
             <div className="modal-buttons">
               <button className="modal-btn modal-btn-cancel" onClick={() => setShowModal(false)}>취소</button>
-              <button className="modal-btn modal-btn-confirm" onClick={handleSubmit}>확인</button>
+              <button className="modal-btn modal-btn-confirm" onClick={handleSubmit}>제출</button>
             </div>
           </div>
         </div>

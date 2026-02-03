@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /* @tailwind 지움 - 순수 CSS 모드로 전환 */
 
 /* 여기서부터 원본 스타일 */
@@ -35,11 +36,148 @@ body {
 .notch { 
     height: 44px; 
     background: var(--bg-white); 
+=======
+/* Road Guardian - Full Responsive Design */
+
+* { 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box; 
+}
+
+:root {
+    /* Primary Colors */
+    --primary-blue: #2563EB;
+    --primary-light: #DBEAFE;
+    --primary-dark: #1E40AF;
+    --primary-gradient: linear-gradient(135deg, #3B82F6 0%, #1D4ED8 100%);
+    
+    /* Secondary Colors */
+    --secondary-indigo: #6366F1;
+    --secondary-purple: #8B5CF6;
+    
+    /* Status Colors */
+    --success-green: #10B981;
+    --success-light: #D1FAE5;
+    --warning-orange: #F59E0B;
+    --warning-light: #FEF3C7;
+    --danger-red: #EF4444;
+    --danger-light: #FEE2E2;
+    --info-blue: #3B82F6;
+    --info-light: #DBEAFE;
+    
+    /* Text Colors */
+    --text-primary: #0F172A;
+    --text-secondary: #64748B;
+    --text-tertiary: #94A3B8;
+    --text-inverse: #FFFFFF;
+    
+    /* Background Colors */
+    --bg-primary: #FFFFFF;
+    --bg-secondary: #F8FAFC;
+    --bg-tertiary: #F1F5F9;
+    --bg-dark: #1E293B;
+    
+    /* Border Colors */
+    --border-light: #E2E8F0;
+    --border-medium: #CBD5E1;
+    --border-dark: #94A3B8;
+    
+    /* Shadows */
+    --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    
+    /* Border Radius */
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 20px;
+    --radius-2xl: 24px;
+    --radius-full: 9999px;
+    
+    /* Spacing */
+    --spacing-xs: 4px;
+    --spacing-sm: 8px;
+    --spacing-md: 12px;
+    --spacing-lg: 16px;
+    --spacing-xl: 20px;
+    --spacing-2xl: 24px;
+    --spacing-3xl: 32px;
+}
+
+/* ==================== 🎯 Global Styles - 반응형 배경 ==================== */
+body { 
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', sans-serif;
+    /* 모바일: 그라디언트 배경 */
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: var(--text-primary); 
+    line-height: 1.6; 
+    overflow-x: hidden; 
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* 데스크톱: 흰색 배경 */
+@media (min-width: 1024px) {
+    body {
+        background: var(--bg-secondary);
+    }
+}
+
+/* ==================== 🔥 완전 반응형 Mobile Frame ==================== */
+.mobile-frame { 
+    width: 100%; 
+    height: 100vh; 
+    margin: 0; 
+    background: var(--bg-primary); 
+    border-radius: 0; 
+    box-shadow: none; 
+    overflow: hidden; 
+    display: flex; 
+    flex-direction: column; 
+    position: relative;
+}
+
+/* 태블릿: 중앙 박스 */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .mobile-frame {
+        width: 90%;
+        max-width: 480px;
+        height: 90vh;
+        max-height: 900px;
+        margin: 20px auto;
+        border-radius: 30px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(0, 0, 0, 0.1);
+    }
+}
+
+/* 데스크톱: 전체 화면 (배경 없음) */
+@media (min-width: 1024px) {
+    .mobile-frame {
+        width: 100%;
+        height: 100vh;
+        margin: 0;
+        border-radius: 0;
+        box-shadow: none;
+        background: var(--bg-secondary);
+    }
+}
+
+/* ==================== Notch - 데스크톱에서 숨김 ==================== */
+.notch { 
+    height: 44px; 
+    background: var(--bg-primary); 
+>>>>>>> ui-partner/main
     display: flex; 
     justify-content: space-between; 
     align-items: center; 
     padding: 8px 20px; 
     border-bottom: 1px solid var(--border-light); 
+<<<<<<< HEAD
     font-size: 14px; 
     color: var(--text-secondary); 
 }
@@ -148,3 +286,2144 @@ body {
 .modal-btn { flex: 1; padding: 10px; border-radius: 10px; border: none; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; }
 .modal-btn-cancel { background: var(--bg-gray); color: var(--text-primary); }
 .modal-btn-confirm { background: var(--primary-blue); color: white; }
+=======
+    font-size: 13px; 
+    font-weight: 500;
+    color: var(--text-secondary); 
+}
+
+/* 모바일과 데스크톱에서 notch 숨김 */
+@media (max-width: 767px), (min-width: 1024px) {
+    .notch {
+        display: none;
+    }
+}
+
+.app-content { 
+    flex: 1; 
+    display: flex; 
+    flex-direction: column; 
+    overflow-y: auto; 
+    background: var(--bg-secondary);
+}
+
+/* ==================== Login Screen - 반응형 ==================== */
+.login-screen { 
+    flex: 1; 
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center; 
+    align-items: center; 
+    padding: 24px; 
+    background: linear-gradient(135deg, var(--primary-light) 0%, var(--bg-primary) 100%); 
+    overflow-y: auto; 
+}
+
+@media (min-width: 768px) {
+    .login-screen {
+        padding: 48px 32px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .login-screen {
+        padding: 80px 40px;
+        background: var(--bg-secondary);
+    }
+}
+
+.login-container { 
+    width: 100%; 
+    max-width: 320px; 
+}
+
+@media (min-width: 1024px) {
+    .login-container {
+        max-width: 480px;
+        padding: 60px;
+        background: var(--bg-primary);
+        border-radius: var(--radius-2xl);
+        box-shadow: var(--shadow-xl);
+    }
+}
+
+.login-header { 
+    text-align: center; 
+    margin-bottom: 32px; 
+}
+
+@media (min-width: 768px) {
+    .login-header {
+        margin-bottom: 48px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .login-header {
+        margin-bottom: 56px;
+    }
+}
+
+.login-icon { 
+    font-size: 60px; 
+    margin-bottom: 12px;
+    filter: drop-shadow(0 4px 12px rgba(37, 99, 235, 0.2));
+}
+
+@media (min-width: 768px) {
+    .login-icon {
+        font-size: 72px;
+        margin-bottom: 16px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .login-icon {
+        font-size: 96px;
+        margin-bottom: 24px;
+    }
+}
+
+.login-title { 
+    font-size: 24px; 
+    font-weight: 800; 
+    color: var(--text-primary); 
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+}
+
+@media (min-width: 768px) {
+    .login-title {
+        font-size: 28px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .login-title {
+        font-size: 36px;
+        margin-bottom: 12px;
+    }
+}
+
+.login-subtitle { 
+    font-size: 13px; 
+    color: var(--text-secondary); 
+    line-height: 1.6; 
+    font-weight: 500;
+}
+
+@media (min-width: 768px) {
+    .login-subtitle {
+        font-size: 14px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .login-subtitle {
+        font-size: 16px;
+        line-height: 1.8;
+    }
+}
+
+.login-buttons { 
+    display: flex; 
+    flex-direction: column; 
+    gap: 12px; 
+    margin-bottom: 24px; 
+}
+
+@media (min-width: 1024px) {
+    .login-buttons {
+        gap: 16px;
+        margin-bottom: 32px;
+    }
+}
+
+.login-btn { 
+    width: 100%; 
+    padding: 14px 18px; 
+    border-radius: var(--radius-lg); 
+    border: none; 
+    font-size: 14px; 
+    font-weight: 600; 
+    cursor: pointer; 
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    gap: 12px;
+    box-shadow: var(--shadow-sm);
+}
+
+@media (min-width: 768px) {
+    .login-btn {
+        padding: 16px 20px;
+        font-size: 15px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .login-btn {
+        padding: 18px 24px;
+        font-size: 16px;
+        gap: 16px;
+    }
+}
+
+.login-btn:active { 
+    transform: scale(0.98); 
+}
+
+.kakao-login-btn { 
+    background: #FEE500; 
+    color: #000000; 
+}
+
+.kakao-login-btn:hover { 
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-2px);
+}
+
+.google-login-btn { 
+    background: var(--bg-primary); 
+    color: var(--text-primary); 
+    border: 1px solid var(--border-light); 
+}
+
+.google-login-btn:hover { 
+    background: var(--bg-tertiary); 
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+
+.btn-icon { 
+    font-size: 18px; 
+}
+
+@media (min-width: 768px) {
+    .btn-icon {
+        font-size: 20px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .btn-icon {
+        font-size: 24px;
+    }
+}
+
+.btn-text { 
+    display: flex; 
+    flex-direction: column; 
+    align-items: flex-start; 
+}
+
+.btn-main { 
+    font-size: 14px; 
+    font-weight: 600; 
+}
+
+@media (min-width: 768px) {
+    .btn-main {
+        font-size: 15px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .btn-main {
+        font-size: 17px;
+    }
+}
+
+.btn-sub { 
+    font-size: 11px; 
+    opacity: 0.7; 
+}
+
+@media (min-width: 1024px) {
+    .btn-sub {
+        font-size: 13px;
+    }
+}
+
+.login-footer { 
+    text-align: center; 
+    padding: 20px 0; 
+    border-top: 1px solid var(--border-light); 
+}
+
+@media (min-width: 768px) {
+    .login-footer {
+        padding: 24px 0;
+    }
+}
+
+@media (min-width: 1024px) {
+    .login-footer {
+        padding: 32px 0;
+    }
+}
+
+.login-footer-text { 
+    font-size: 11px; 
+    color: var(--text-secondary); 
+    line-height: 1.8; 
+}
+
+@media (min-width: 768px) {
+    .login-footer-text {
+        font-size: 12px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .login-footer-text {
+        font-size: 14px;
+    }
+}
+
+.login-footer-highlight { 
+    color: var(--primary-blue); 
+    font-weight: 600; 
+}
+
+.security-badge { 
+    display: inline-flex; 
+    align-items: center; 
+    gap: 6px; 
+    padding: 8px 16px; 
+    background: linear-gradient(135deg, #D1FAE5 0%, #A7F3D0 100%); 
+    border-radius: var(--radius-full); 
+    font-size: 11px; 
+    color: var(--success-green); 
+    font-weight: 600; 
+    margin-top: 16px;
+    box-shadow: var(--shadow-sm);
+}
+
+@media (min-width: 768px) {
+    .security-badge {
+        font-size: 12px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .security-badge {
+        font-size: 13px;
+        padding: 10px 20px;
+        gap: 8px;
+    }
+}
+
+.security-badge-dot { 
+    width: 8px; 
+    height: 8px; 
+    border-radius: 50%; 
+    background: var(--success-green); 
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; 
+}
+
+@keyframes pulse { 
+    0%, 100% { 
+        opacity: 1; 
+        transform: scale(1);
+    } 
+    50% { 
+        opacity: 0.5; 
+        transform: scale(1.1);
+    } 
+}
+
+/* ==================== Main App Screen ==================== */
+.main-app { 
+    display: none; 
+    flex: 1; 
+    flex-direction: column; 
+    height: 100%; 
+}
+
+.main-app.show { 
+    display: flex; 
+}
+
+.screen { 
+    flex: 1; 
+    display: none; 
+    flex-direction: column; 
+    overflow-y: auto; 
+    padding-bottom: 80px; 
+}
+
+/* 데스크톱에서 네비게이션 높이 조정 */
+@media (min-width: 1024px) {
+    .screen {
+        padding-bottom: 0;
+    }
+}
+
+.screen.active { 
+    display: flex; 
+}
+
+/* ==================== Header - 데스크톱 확장 ==================== */
+.header { 
+    background: var(--primary-gradient);
+    color: white; 
+    padding: 24px 20px; 
+    text-align: center; 
+    box-shadow: 0 4px 20px rgba(37, 99, 235, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+@media (min-width: 768px) {
+    .header {
+        padding: 28px 24px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .header {
+        padding: 40px 60px;
+        text-align: left;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+}
+
+.header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+    opacity: 0.5;
+}
+
+.header h1 { 
+    font-size: 20px; 
+    font-weight: 700; 
+    margin-bottom: 6px;
+    position: relative;
+    letter-spacing: -0.5px;
+}
+
+@media (min-width: 768px) {
+    .header h1 {
+        font-size: 22px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .header h1 {
+        font-size: 28px;
+        margin-bottom: 8px;
+    }
+}
+
+.header p { 
+    font-size: 12px; 
+    opacity: 0.9;
+    position: relative;
+    font-weight: 500;
+}
+
+@media (min-width: 768px) {
+    .header p {
+        font-size: 13px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .header p {
+        font-size: 15px;
+    }
+}
+
+/* ==================== Dashboard Grid - 데스크톱 2열 → 4열 ==================== */
+.dashboard-grid { 
+    display: grid; 
+    grid-template-columns: 1fr 1fr; 
+    gap: 12px; 
+    padding: 16px; 
+}
+
+@media (min-width: 768px) {
+    .dashboard-grid {
+        gap: 16px;
+        padding: 20px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .dashboard-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 24px;
+        padding: 40px 60px;
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+}
+
+@media (min-width: 1440px) {
+    .dashboard-grid {
+        max-width: 1600px;
+        padding: 40px 80px;
+    }
+}
+
+.stat-card { 
+    background: var(--bg-primary); 
+    border: 1px solid var(--border-light); 
+    border-radius: var(--radius-xl); 
+    padding: 20px 14px; 
+    text-align: center; 
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: var(--shadow-sm);
+    position: relative;
+    overflow: hidden;
+}
+
+@media (min-width: 768px) {
+    .stat-card {
+        padding: 24px 16px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .stat-card {
+        padding: 40px 24px;
+    }
+}
+
+.stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--primary-gradient);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.stat-card:hover::before {
+    transform: scaleX(1);
+}
+
+.stat-card:hover { 
+    border-color: var(--primary-blue); 
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-4px);
+}
+
+.stat-value { 
+    font-size: 28px; 
+    font-weight: 800; 
+    background: var(--primary-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 8px;
+    letter-spacing: -1px;
+}
+
+@media (min-width: 768px) {
+    .stat-value {
+        font-size: 32px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .stat-value {
+        font-size: 48px;
+        margin-bottom: 12px;
+    }
+}
+
+.stat-label { 
+    font-size: 12px; 
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
+@media (min-width: 768px) {
+    .stat-label {
+        font-size: 13px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .stat-label {
+        font-size: 15px;
+    }
+}
+
+/* ==================== Menu Card - 데스크톱 2열 레이아웃 ==================== */
+.menu-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0;
+}
+
+@media (min-width: 1024px) {
+    .menu-list {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 24px;
+        padding: 0 60px 40px;
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+}
+
+@media (min-width: 1440px) {
+    .menu-list {
+        max-width: 1600px;
+        padding: 0 80px 40px;
+    }
+}
+
+.menu-card { 
+    background: var(--bg-primary); 
+    border: 1px solid var(--border-light); 
+    border-radius: var(--radius-xl); 
+    padding: 16px; 
+    margin: 10px 16px; 
+    display: flex; 
+    align-items: center; 
+    gap: 14px; 
+    cursor: pointer; 
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: var(--shadow-sm);
+}
+
+@media (min-width: 768px) {
+    .menu-card {
+        padding: 18px;
+        margin: 12px 20px;
+        gap: 16px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .menu-card {
+        padding: 28px 32px;
+        margin: 0;
+        gap: 20px;
+    }
+}
+
+.menu-card:hover { 
+    border-color: var(--primary-blue); 
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-2px);
+}
+
+.menu-icon { 
+    width: 44px; 
+    height: 44px; 
+    border-radius: var(--radius-md); 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    font-size: 22px;
+    flex-shrink: 0;
+}
+
+@media (min-width: 768px) {
+    .menu-icon {
+        width: 48px;
+        height: 48px;
+        font-size: 24px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .menu-icon {
+        width: 64px;
+        height: 64px;
+        font-size: 32px;
+    }
+}
+
+.menu-icon.blue { 
+    background: linear-gradient(135deg, #DBEAFE 0%, #BFDBFE 100%); 
+    color: var(--primary-blue); 
+}
+
+.menu-icon.green { 
+    background: linear-gradient(135deg, #D1FAE5 0%, #A7F3D0 100%); 
+    color: var(--success-green); 
+}
+
+.menu-icon.orange { 
+    background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%); 
+    color: var(--warning-orange); 
+}
+
+.menu-icon.red { 
+    background: linear-gradient(135deg, #FEE2E2 0%, #FECACA 100%); 
+    color: var(--danger-red); 
+}
+
+.menu-content { 
+    flex: 1; 
+}
+
+.menu-title { 
+    font-size: 14px; 
+    font-weight: 600; 
+    color: var(--text-primary);
+    margin-bottom: 2px;
+}
+
+@media (min-width: 768px) {
+    .menu-title {
+        font-size: 15px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .menu-title {
+        font-size: 18px;
+        margin-bottom: 4px;
+    }
+}
+
+.menu-desc { 
+    font-size: 11px; 
+    color: var(--text-secondary); 
+    margin-top: 4px; 
+}
+
+@media (min-width: 768px) {
+    .menu-desc {
+        font-size: 12px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .menu-desc {
+        font-size: 14px;
+        margin-top: 6px;
+    }
+}
+
+.menu-arrow { 
+    color: var(--text-tertiary); 
+    font-size: 20px;
+    font-weight: 300;
+}
+
+@media (min-width: 768px) {
+    .menu-arrow {
+        font-size: 24px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .menu-arrow {
+        font-size: 28px;
+    }
+}
+
+/* ==================== Report List - 데스크톱 2열 ==================== */
+.report-list { 
+    padding: 16px; 
+}
+
+@media (min-width: 768px) {
+    .report-list {
+        padding: 20px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .report-list {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 24px;
+        padding: 40px 60px;
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+}
+
+@media (min-width: 1440px) {
+    .report-list {
+        max-width: 1600px;
+        padding: 40px 80px;
+    }
+}
+
+.report-item { 
+    background: var(--bg-primary); 
+    border: 1px solid var(--border-light); 
+    border-radius: var(--radius-lg); 
+    padding: 14px; 
+    margin-bottom: 14px; 
+    display: flex; 
+    gap: 14px; 
+    cursor: pointer; 
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: var(--shadow-sm);
+}
+
+@media (min-width: 768px) {
+    .report-item {
+        padding: 16px;
+        margin-bottom: 16px;
+        gap: 16px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .report-item {
+        padding: 24px;
+        margin-bottom: 0;
+        gap: 20px;
+    }
+}
+
+.report-item:hover { 
+    border-color: var(--primary-blue); 
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+
+.report-thumbnail { 
+    width: 56px; 
+    height: 56px; 
+    background: var(--primary-gradient);
+    border-radius: var(--radius-md); 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    color: white; 
+    font-size: 24px; 
+    flex-shrink: 0;
+    box-shadow: var(--shadow-md);
+}
+
+@media (min-width: 768px) {
+    .report-thumbnail {
+        width: 64px;
+        height: 64px;
+        font-size: 28px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .report-thumbnail {
+        width: 80px;
+        height: 80px;
+        font-size: 36px;
+    }
+}
+
+.report-info { 
+    flex: 1; 
+}
+
+.report-title { 
+    font-size: 14px; 
+    font-weight: 600; 
+    color: var(--text-primary); 
+    margin-bottom: 6px;
+}
+
+@media (min-width: 768px) {
+    .report-title {
+        font-size: 15px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .report-title {
+        font-size: 17px;
+        margin-bottom: 8px;
+    }
+}
+
+.report-meta { 
+    font-size: 11px; 
+    color: var(--text-secondary); 
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+@media (min-width: 768px) {
+    .report-meta {
+        font-size: 12px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .report-meta {
+        font-size: 14px;
+        margin-bottom: 10px;
+    }
+}
+
+.report-status { 
+    display: inline-block; 
+    padding: 4px 10px; 
+    border-radius: var(--radius-full); 
+    font-size: 10px; 
+    font-weight: 600;
+}
+
+@media (min-width: 768px) {
+    .report-status {
+        padding: 4px 12px;
+        font-size: 11px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .report-status {
+        padding: 6px 14px;
+        font-size: 12px;
+    }
+}
+
+.status-complete { 
+    background: var(--success-light); 
+    color: var(--success-green); 
+}
+
+.status-pending { 
+    background: var(--warning-light); 
+    color: var(--warning-orange); 
+}
+
+.status-rejected { 
+    background: var(--danger-light); 
+    color: var(--danger-red); 
+}
+
+/* ==================== Analytics Section ==================== */
+.analytics-section { 
+    padding: 16px; 
+}
+
+@media (min-width: 768px) {
+    .analytics-section {
+        padding: 20px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .analytics-section {
+        padding: 40px 60px;
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+}
+
+@media (min-width: 1440px) {
+    .analytics-section {
+        max-width: 1600px;
+        padding: 40px 80px;
+    }
+}
+
+.analytics-card { 
+    background: linear-gradient(135deg, #DBEAFE 0%, #EFF6FF 100%); 
+    border: 1px solid var(--border-light); 
+    border-radius: var(--radius-xl); 
+    padding: 18px; 
+    margin-bottom: 14px;
+    box-shadow: var(--shadow-sm);
+}
+
+@media (min-width: 768px) {
+    .analytics-card {
+        padding: 20px;
+        margin-bottom: 16px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .analytics-card {
+        padding: 32px;
+        margin-bottom: 24px;
+    }
+}
+
+.analytics-title { 
+    font-size: 14px; 
+    font-weight: 600; 
+    color: var(--text-primary); 
+    margin-bottom: 14px; 
+}
+
+@media (min-width: 768px) {
+    .analytics-title {
+        font-size: 15px;
+        margin-bottom: 16px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .analytics-title {
+        font-size: 18px;
+        margin-bottom: 24px;
+    }
+}
+
+.chart-bar { 
+    display: flex; 
+    gap: 10px; 
+    margin-bottom: 14px; 
+    align-items: flex-end; 
+    height: 90px; 
+}
+
+@media (min-width: 768px) {
+    .chart-bar {
+        gap: 12px;
+        margin-bottom: 16px;
+        height: 100px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .chart-bar {
+        gap: 16px;
+        height: 150px;
+        margin-bottom: 20px;
+    }
+}
+
+.bar { 
+    flex: 1; 
+    background: var(--primary-gradient);
+    border-radius: 6px 6px 0 0; 
+    position: relative; 
+    min-height: 30px;
+    box-shadow: var(--shadow-sm);
+}
+
+.bar-label { 
+    position: absolute; 
+    bottom: -20px; 
+    left: 50%; 
+    transform: translateX(-50%); 
+    font-size: 10px; 
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
+@media (min-width: 768px) {
+    .bar-label {
+        bottom: -24px;
+        font-size: 11px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .bar-label {
+        bottom: -28px;
+        font-size: 13px;
+    }
+}
+
+/* ==================== Bottom Navigation - 데스크톱 사이드바 ==================== */
+.bottom-nav { 
+    position: absolute; 
+    bottom: 0; 
+    left: 0; 
+    right: 0; 
+    height: 70px; 
+    background: var(--bg-primary); 
+    border-top: 1px solid var(--border-light); 
+    display: flex; 
+    justify-content: space-around; 
+    align-items: flex-start; 
+    padding-top: 8px; 
+    padding-bottom: 16px;
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.05);
+    z-index: 100;
+}
+
+@media (min-width: 768px) {
+    .bottom-nav {
+        height: 80px;
+        padding-top: 10px;
+        padding-bottom: 20px;
+    }
+}
+
+/* 데스크톱: 상단 헤더 내비게이션 */
+@media (min-width: 1024px) {
+    .bottom-nav {
+        position: static;
+        height: auto;
+        border-top: none;
+        border-bottom: 1px solid var(--border-light);
+        padding: 0 60px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        background: var(--bg-primary);
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+    }
+}
+
+@media (min-width: 1440px) {
+    .bottom-nav {
+        padding: 0 80px;
+    }
+}
+
+.nav-item { 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    gap: 3px; 
+    cursor: pointer; 
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+    color: var(--text-tertiary); 
+    text-decoration: none; 
+    font-size: 10px;
+    font-weight: 600;
+    width: 56px; 
+    padding: 6px 0;
+    border-radius: var(--radius-md);
+}
+
+@media (min-width: 768px) {
+    .nav-item {
+        gap: 4px;
+        font-size: 11px;
+        width: 60px;
+        padding: 8px 0;
+    }
+}
+
+@media (min-width: 1024px) {
+    .nav-item {
+        flex-direction: row;
+        width: auto;
+        padding: 16px 24px;
+        gap: 12px;
+        font-size: 15px;
+        border-radius: 0;
+        border-bottom: 3px solid transparent;
+    }
+    
+    .nav-item:hover {
+        background: var(--bg-secondary);
+    }
+    
+    .nav-item.active {
+        border-bottom-color: var(--primary-blue);
+        background: transparent;
+    }
+}
+
+.nav-item.active { 
+    color: var(--primary-blue);
+}
+
+.nav-item.active .nav-icon {
+    transform: scale(1.1);
+}
+
+@media (min-width: 1024px) {
+    .nav-item.active .nav-icon {
+        transform: scale(1);
+    }
+}
+
+.nav-icon { 
+    font-size: 24px;
+    transition: transform 0.3s ease;
+}
+
+@media (min-width: 768px) {
+    .nav-icon {
+        font-size: 26px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .nav-icon {
+        font-size: 22px;
+    }
+}
+
+/* ==================== Buttons ==================== */
+.btn { 
+    padding: 12px 20px; 
+    border-radius: var(--radius-md); 
+    border: none; 
+    font-size: 14px; 
+    font-weight: 600; 
+    cursor: pointer; 
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+    display: inline-flex; 
+    align-items: center; 
+    gap: 8px; 
+    margin: 14px 16px;
+    box-shadow: var(--shadow-sm);
+}
+
+@media (min-width: 768px) {
+    .btn {
+        padding: 14px 24px;
+        font-size: 15px;
+        margin: 16px 20px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .btn {
+        padding: 16px 32px;
+        font-size: 16px;
+        margin: 20px 60px;
+    }
+}
+
+.btn-primary { 
+    background: var(--primary-gradient);
+    color: white; 
+    width: calc(100% - 32px); 
+    justify-content: center;
+}
+
+@media (min-width: 768px) {
+    .btn-primary {
+        width: calc(100% - 40px);
+    }
+}
+
+@media (min-width: 1024px) {
+    .btn-primary {
+        width: auto;
+        max-width: 400px;
+        margin: 20px auto;
+        display: flex;
+    }
+}
+
+.btn-primary:hover { 
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-2px);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+/* ==================== Chatbot Styles ==================== */
+.chatbot-container { 
+    flex: 1; 
+    display: flex; 
+    flex-direction: column; 
+    overflow: hidden; 
+}
+
+@media (min-width: 1024px) {
+    .chatbot-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        width: 100%;
+    }
+}
+
+.chat-messages { 
+    flex: 1; 
+    overflow-y: auto; 
+    padding: 16px; 
+    display: flex; 
+    flex-direction: column; 
+    gap: 10px; 
+}
+
+@media (min-width: 768px) {
+    .chat-messages {
+        padding: 20px;
+        gap: 12px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .chat-messages {
+        padding: 40px 60px;
+        gap: 16px;
+    }
+}
+
+.chat-message { 
+    display: flex; 
+    gap: 10px; 
+    margin-bottom: 10px;
+    animation: fadeInUp 0.3s ease;
+}
+
+@media (min-width: 768px) {
+    .chat-message {
+        gap: 12px;
+        margin-bottom: 12px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .chat-message {
+        gap: 16px;
+        margin-bottom: 16px;
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.chat-message.user { 
+    justify-content: flex-end; 
+}
+
+.chat-bubble { 
+    max-width: 85%; 
+    padding: 12px 16px; 
+    border-radius: var(--radius-xl); 
+    font-size: 13px; 
+    line-height: 1.6; 
+    word-wrap: break-word;
+    box-shadow: var(--shadow-sm);
+}
+
+@media (min-width: 768px) {
+    .chat-bubble {
+        padding: 14px 18px;
+        font-size: 14px;
+        max-width: 80%;
+    }
+}
+
+@media (min-width: 1024px) {
+    .chat-bubble {
+        padding: 16px 24px;
+        font-size: 15px;
+        max-width: 70%;
+    }
+}
+
+.chat-bubble.assistant { 
+    background: var(--bg-primary);
+    color: var(--text-primary); 
+    border-radius: var(--radius-xl) var(--radius-xl) var(--radius-xl) 4px;
+    border: 1px solid var(--border-light);
+}
+
+.chat-bubble.user { 
+    background: var(--primary-gradient);
+    color: white; 
+    border-radius: var(--radius-xl) var(--radius-xl) 4px var(--radius-xl);
+}
+
+.chat-input-area { 
+    padding: 14px 16px; 
+    border-top: 1px solid var(--border-light); 
+    background: var(--bg-primary); 
+    display: flex; 
+    gap: 10px; 
+    align-items: flex-end;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.05);
+}
+
+@media (min-width: 768px) {
+    .chat-input-area {
+        padding: 16px 20px;
+        gap: 12px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .chat-input-area {
+        padding: 24px 60px;
+        gap: 16px;
+        max-width: 1200px;
+        margin: 0 auto;
+        width: 100%;
+    }
+}
+
+.chat-input-field { 
+    flex: 1; 
+    padding: 10px 14px; 
+    border: 1px solid var(--border-light); 
+    border-radius: var(--radius-md); 
+    font-size: 13px; 
+    resize: none; 
+    font-family: inherit; 
+    max-height: 100px;
+    transition: all 0.3s ease;
+}
+
+@media (min-width: 768px) {
+    .chat-input-field {
+        padding: 12px 16px;
+        font-size: 14px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .chat-input-field {
+        padding: 14px 20px;
+        font-size: 15px;
+        max-height: 120px;
+    }
+}
+
+.chat-input-field:focus { 
+    outline: none; 
+    border-color: var(--primary-blue); 
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.chat-send-btn { 
+    padding: 10px 12px; 
+    background: var(--primary-gradient);
+    color: white; 
+    border: none; 
+    border-radius: var(--radius-md); 
+    cursor: pointer; 
+    font-size: 16px; 
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    min-width: 40px; 
+    height: 40px;
+    box-shadow: var(--shadow-sm);
+}
+
+@media (min-width: 768px) {
+    .chat-send-btn {
+        padding: 12px 14px;
+        font-size: 18px;
+        min-width: 44px;
+        height: 44px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .chat-send-btn {
+        padding: 14px 16px;
+        font-size: 20px;
+        min-width: 52px;
+        height: 52px;
+    }
+}
+
+.chat-send-btn:hover { 
+    box-shadow: var(--shadow-md);
+    transform: scale(1.05);
+}
+
+.chat-send-btn:active {
+    transform: scale(0.95);
+}
+
+.suggestions-container { 
+    padding: 14px 16px; 
+    display: grid; 
+    grid-template-columns: 1fr; 
+    gap: 8px; 
+    border-top: 1px solid var(--border-light);
+    background: var(--bg-secondary);
+}
+
+@media (min-width: 768px) {
+    .suggestions-container {
+        padding: 16px 20px;
+        gap: 10px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .suggestions-container {
+        padding: 20px 60px;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+}
+
+.suggestion-btn { 
+    padding: 10px 14px; 
+    background: var(--bg-primary); 
+    border: 1px solid var(--border-light); 
+    border-radius: var(--radius-md); 
+    font-size: 12px; 
+    cursor: pointer; 
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+    text-align: left; 
+    line-height: 1.5;
+    font-weight: 500;
+}
+
+@media (min-width: 768px) {
+    .suggestion-btn {
+        padding: 12px 16px;
+        font-size: 13px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .suggestion-btn {
+        padding: 14px 20px;
+        font-size: 14px;
+    }
+}
+
+.suggestion-btn:hover { 
+    background: var(--primary-light); 
+    border-color: var(--primary-blue);
+    transform: translateX(4px);
+}
+
+/* ==================== Modal ==================== */
+.modal { 
+    display: none; 
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    right: 0; 
+    bottom: 0; 
+    background: rgba(0, 0, 0, 0.6); 
+    z-index: 1000; 
+    align-items: center; 
+    justify-content: center;
+    backdrop-filter: blur(4px);
+}
+
+.modal.active { 
+    display: flex;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.modal-content { 
+    background: var(--bg-primary); 
+    border-radius: var(--radius-2xl); 
+    padding: 24px; 
+    width: 85%; 
+    max-width: 300px; 
+    box-shadow: var(--shadow-2xl);
+    animation: scaleIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@media (min-width: 768px) {
+    .modal-content {
+        padding: 28px;
+        max-width: 320px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .modal-content {
+        padding: 40px;
+        max-width: 480px;
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.modal-title { 
+    font-size: 16px; 
+    font-weight: 700; 
+    color: var(--text-primary); 
+    margin-bottom: 10px;
+}
+
+@media (min-width: 768px) {
+    .modal-title {
+        font-size: 18px;
+        margin-bottom: 12px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .modal-title {
+        font-size: 22px;
+        margin-bottom: 16px;
+    }
+}
+
+.modal-desc { 
+    font-size: 13px; 
+    color: var(--text-secondary); 
+    margin-bottom: 20px; 
+    line-height: 1.6; 
+}
+
+@media (min-width: 768px) {
+    .modal-desc {
+        font-size: 14px;
+        margin-bottom: 24px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .modal-desc {
+        font-size: 16px;
+        margin-bottom: 32px;
+        line-height: 1.8;
+    }
+}
+
+.modal-buttons { 
+    display: flex; 
+    gap: 8px; 
+}
+
+@media (min-width: 768px) {
+    .modal-buttons {
+        gap: 10px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .modal-buttons {
+        gap: 16px;
+    }
+}
+
+.modal-btn { 
+    flex: 1; 
+    padding: 10px; 
+    border-radius: var(--radius-md); 
+    border: none; 
+    font-size: 13px; 
+    font-weight: 600; 
+    cursor: pointer; 
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@media (min-width: 768px) {
+    .modal-btn {
+        padding: 12px;
+        font-size: 14px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .modal-btn {
+        padding: 14px;
+        font-size: 16px;
+    }
+}
+
+.modal-btn-cancel { 
+    background: var(--bg-tertiary); 
+    color: var(--text-primary);
+}
+
+.modal-btn-cancel:hover {
+    background: var(--border-medium);
+}
+
+.modal-btn-confirm { 
+    background: var(--primary-gradient);
+    color: white;
+    box-shadow: var(--shadow-sm);
+}
+
+.modal-btn-confirm:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
+}
+
+/* ==================== Spinner Animation ==================== */
+.spinner {
+    width: 20px;
+    height: 20px;
+    border: 3px solid var(--border-light);
+    border-top: 3px solid var(--primary-blue);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@media (min-width: 768px) {
+    .spinner {
+        width: 24px;
+        height: 24px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .spinner {
+        width: 28px;
+        height: 28px;
+    }
+}
+
+@keyframes spin { 
+    0% { transform: rotate(0deg); } 
+    100% { transform: rotate(360deg); } 
+}
+
+.blink-cursor { 
+    animation: blink 1s step-end infinite; 
+} 
+
+@keyframes blink { 
+    50% { opacity: 0; } 
+}
+
+/* ==================== Scrollbar Styles ==================== */
+::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+}
+
+@media (min-width: 768px) {
+    ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+    }
+}
+
+@media (min-width: 1024px) {
+    ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--border-medium);
+    border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--border-dark);
+}
+
+/* ==================== Utility Classes ==================== */
+.text-gradient {
+    background: var(--primary-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.card-hover {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-hover:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+}
+
+/* ==================== 모바일 터치 피드백 ==================== */
+@media (max-width: 1023px) {
+    .login-btn:active,
+    .btn:active,
+    .menu-card:active,
+    .report-item:active,
+    .nav-item:active {
+        transform: scale(0.97);
+    }
+}
+
+/* ==================== 가독성 향상 ==================== */
+@media (min-width: 1024px) {
+    body {
+        line-height: 1.7;
+    }
+}
+
+/* ==================== 초대형 화면 최적화 ==================== */
+@media (min-width: 1920px) {
+    .dashboard-grid,
+    .report-list,
+    .analytics-section {
+        max-width: 1800px;
+        padding-left: 100px;
+        padding-right: 100px;
+    }
+    
+    .bottom-nav {
+        padding-left: 100px;
+        padding-right: 100px;
+    }
+}
+
+/* ==================== 데스크톱 전용: 사이드바 및 레이아웃 수정 ==================== */
+@media (min-width: 1024px) {
+    /* 1. 레이아웃을 가로 배치(사이드바 | 컨텐츠)로 변경 */
+    .mobile-frame {
+        flex-direction: row !important;
+        display: flex !important;
+    }
+
+    /* 2. 하단 네비게이션 -> 왼쪽 사이드바로 변환 */
+    .bottom-nav {
+        position: relative !important;
+        width: 280px !important; /* 사이드바 너비 */
+        height: 100vh !important;
+        flex-direction: column !important;
+        justify-content: flex-start !important;
+        padding: 40px 16px !important;
+        border-top: none !important;
+        border-right: 1px solid var(--border-light) !important;
+    }
+
+    .nav-item {
+        width: 100% !important;
+        flex-direction: row !important;
+        justify-content: flex-start !important;
+        padding: 16px 20px !important;
+        gap: 12px !important;
+        font-size: 16px !important;
+        border-bottom: none !important;
+        border-left: 4px solid transparent !important;
+    }
+
+    .nav-item.active {
+        border-left-color: var(--primary-blue) !important;
+        background: var(--primary-light) !important;
+    }
+
+    /* 3. 대시보드 퀵메뉴: 2열 배치 및 하늘색 통일 */
+    .dashboard-grid {
+        grid-template-columns: repeat(2, 1fr) !important; /* 4열에서 2열로 */
+        max-width: 900px !important;
+        margin: 0 auto !important;
+    }
+
+    /* 모든 박스 아이콘 배경과 텍스트를 하늘색 톤으로 통일 */
+    .stat-card .stat-value, 
+    .menu-icon {
+        background: var(--primary-light) !important;
+        color: var(--primary-blue) !important;
+        -webkit-text-fill-color: var(--primary-blue) !important;
+    }
+}
+
+/* ==================== 데스크톱: 사이드바 왼쪽 배치 및 대시보드 2열 ==================== */
+@media (min-width: 1024px) {
+    /* 1. 전체 화면 구성: 사이드바를 왼쪽 끝으로 고정 */
+    .mobile-frame {
+        display: flex !important;
+        flex-direction: row !important; /* 가로 방향 배치 */
+        align-items: stretch !important;
+        justify-content: flex-start !important;
+    }
+
+    /* 2. 사이드바(메뉴 바) 설정 */
+    .bottom-nav {
+        order: -1 !important; /* 순서를 가장 앞으로(왼쪽으로) 보냄 */
+        position: sticky !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 260px !important; /* 사이드바 적정 너비 */
+        height: 100vh !important;
+        flex-direction: column !important;
+        padding: 40px 16px !important;
+        border-top: none !important;
+        border-right: 1px solid var(--border-light) !important;
+        background: var(--bg-primary) !important;
+    }
+
+    /* 3. 오른쪽 메인 컨텐츠 영역 */
+    .app-content {
+        flex: 1 !important; /* 남은 공간을 모두 차지 */
+        height: 100vh !important;
+        overflow-y: auto !important;
+    }
+
+    /* 4. 대시보드 퀵메뉴: 2열 배치 및 하늘색 통일 */
+    .dashboard-grid {
+        grid-template-columns: repeat(2, 1fr) !important; /* 2열 고정 */
+        gap: 24px !important;
+        max-width: 1000px !important;
+        margin: 0 auto !important;
+        padding: 40px !important;
+    }
+
+    /* 모든 박스 아이콘 및 수치 텍스트를 하늘색으로 통일 */
+    .stat-card .stat-value, 
+    .menu-icon {
+        background: var(--primary-light) !important;
+        color: var(--primary-blue) !important;
+        -webkit-text-fill-color: var(--primary-blue) !important; /* 그라디언트 제거 */
+    }
+    
+    /* 사이드바 메뉴 항목 가로 정렬 */
+    .nav-item {
+        width: 100% !important;
+        flex-direction: row !important;
+        justify-content: flex-start !important;
+        padding: 16px 20px !important;
+        gap: 15px !important;
+        border-left: 4px solid transparent !important;
+        border-bottom: none !important;
+    }
+
+    .nav-item.active {
+        border-left-color: var(--primary-blue) !important;
+        background: var(--primary-light) !important;
+    }
+}
+
+/* PC 전체화면일 때 적용되는 스타일 */
+@media (min-width: 1024px) {
+    /* 1. 레이아웃: 사이드바 왼쪽 고정 */
+    .mobile-frame {
+        display: flex !important;
+        flex-direction: row !important;
+    }
+
+    .bottom-nav {
+        order: -1 !important;
+        position: relative !important;
+        width: 250px !important;
+        height: 100vh !important;
+        flex-direction: column !important;
+        padding-top: 50px !important;
+        border-right: 1px solid #eee !important;
+    }
+
+    .nav-item {
+        width: 100% !important;
+        flex-direction: row !important;
+        justify-content: flex-start !important;
+        padding-left: 30px !important;
+        gap: 15px;
+    }
+
+    /* 2. 대시보드 박스 2열 배치 */
+    .quick-menu-wrapper {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important; /* 가로 2개씩 */
+        gap: 20px !important;
+        justify-content: center !important; /* 그리드 자체를 가운데로 */
+        width: 100%;
+        max-width: 1000px;
+        margin: 0 auto !important; /* 바깥 여백 자동 조절로 중앙 배치 */
+    }
+
+    /* 3. 박스 디자인: 흰색 배경 & 하늘색 아이콘 */
+    .quick-box {
+        background: #EFF6FF !important; /* 배경 흰색 */
+        border: 1px solid #ffffff !important;
+        margin-bottom: 0 !important;
+        height: 100px !important; /* 높이 고정 */
+    }
+
+    .quick-box .menu-icon {
+        background: #DBEAFE !important; /* 하늘색 배경 */
+        color: #2563EB !important; /* 파란색 아이콘 */
+        border-radius: 12px;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+/* 모든 페이지 헤더 디자인 공통 수정 */
+.header {
+    /* 1. 그라데이션을 연한 하늘색에서 흰색으로 (경계선 제거) */
+    background: linear-gradient(to bottom, #F0F7FF 0%, #FFFFFF 100%) !important;
+    
+    /* 2. 하단 그림자 및 테두리 제거 */
+    box-shadow: none !important;
+    border-bottom: none !important;
+    
+    /* 여백 조정 */
+    padding: 40px 20px 20px 20px !important;
+    text-align: left;
+}
+
+/* 헤더 내 텍스트 색상 (배경이 밝아졌으므로 어두운 색으로 변경) */
+.header h1 {
+    color: var(--text-primary) !important;
+    font-weight: 800;
+    margin-bottom: 6px;
+    
+    /* 3. 작은 화면에서 글자 잘림 방지 (반응형 폰트) */
+    font-size: 24px !important; 
+    letter-spacing: -0.5px;
+    word-break: keep-all; /* 단어 단위 줄바꿈 */
+}
+
+.header p {
+    color: var(--text-secondary) !important;
+    font-size: 14px !important;
+    margin: 0;
+}
+
+/* 아주 작은 화면(아이폰 SE 등) 대응 */
+@media (max-width: 375px) {
+    .header h1 {
+        font-size: 20px !important;
+    }
+}
+
+/* 컴퓨터 전체 화면(사이드바 모드)일 때 헤더 여백 최적화 */
+@media (min-width: 1024px) {
+    .header {
+        padding: 60px 40px 30px 40px !important;
+    }
+    .header h1 {
+        font-size: 32px !important;
+    }
+}
+
+
+/* 1. 모든 화면에서 모바일 프레임(스마트폰 모양) 및 파란 배경 제거 */
+body {
+    background: var(--bg-primary) !important; /* 배경을 항상 흰색으로 */
+    display: block !important;
+}
+
+.mobile-frame {
+    width: 100% !important;
+    max-width: none !important;
+    height: 100vh !important;
+    max-height: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+}
+
+/* 2. 상단 상태바(배터리, 시간 등) 숨기기 */
+.status-bar {
+    display: none !important;
+}
+
+/* 3. 태블릿 및 PC 레이아웃 (600px 이상부터 사이드바 적용) */
+@media (min-width: 600px) {
+    .mobile-frame {
+        display: flex !important;
+        flex-direction: row !important;
+    }
+
+    /* 하단 바를 왼쪽 사이드바로 변경 */
+    .bottom-nav {
+        order: -1 !important;
+        position: relative !important;
+        width: 260px !important;
+        height: 100vh !important;
+        flex-direction: column !important;
+        justify-content: flex-start !important;
+        padding: 40px 16px !important;
+        border-top: none !important;
+        border-right: 1px solid var(--border-light) !important;
+        background: var(--bg-primary) !important;
+    }
+
+    .nav-item {
+        width: 100% !important;
+        flex-direction: row !important;
+        justify-content: flex-start !important;
+        padding: 16px 20px !important;
+        gap: 15px !important;
+        border-bottom: none !important;
+    }
+
+    .app-content {
+        flex: 1 !important;
+        height: 100vh !important;
+        overflow-y: auto !important;
+    }
+
+    /* 대시보드 박스 2열 배치 유지 */
+    .quick-menu-wrapper {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 20px !important;
+        max-width: 900px !important;
+        margin: 0 auto !important;
+    }
+    .status-bar {
+    display: none !important;
+}
+
+}
+
+/* 4. 모바일 레이아웃 (600px 미만) */
+@media (max-width: 599px) {
+    .bottom-nav {
+        display: flex !important;
+        position: fixed !important;
+        bottom: 0 !important;
+        width: 100% !important;
+        height: 70px !important;
+    }
+    
+    .app-content {
+        height: calc(100vh - 70px) !important;
+        overflow-y: auto !important;
+    }
+}
+
+/* 1. 모든 화면에서 상단 상태바(시간, 배터리 등) 완전 제거 */
+.status-bar, 
+.iphone-status-bar, 
+.status-bar-left, 
+.status-bar-right, 
+.battery, 
+.time,
+.signal {
+    display: none !important;
+    visibility: hidden !important;
+    height: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+/* 2. 프레임 상단 여백 제거 (상태바가 차지하던 공간) */
+.mobile-frame {
+    padding-top: 0 !important;
+}
+
+/* 3. 배경색 고정 (파란 배경 방지) */
+body, html {
+    background-color: var(--bg-primary) !important;
+}
+
+>>>>>>> ui-partner/main

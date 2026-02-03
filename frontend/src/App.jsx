@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { ReportProvider } from './contexts/ReportContext'; // ★ 추가
+import { ReportProvider } from './contexts/ReportContext';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import PrivateRoute from './components/PrivateRoute';
 
@@ -15,16 +15,21 @@ import Support from './pages/Support';
 import BottomNav from './components/BottomNav';
 import './index.css';
 
-// 내부 컴포넌트
+// 내부 레이아웃 컴포넌트
 function AppContent() {
   const { isAuthenticated, user, loading } = useAuth();
 
   if (loading) {
-    return <div style={{display:'flex',justifyContent:'center',alignItems:'center',height:'100vh'}}>로딩중...</div>;
+    return (
+      <div style={{display:'flex', justifyContent:'center', alignItems:'center', height:'100vh'}}>
+        로딩중...
+      </div>
+    );
   }
 
   return (
     <div className="mobile-frame">
+      {/* 상태바 레이아웃 (디자인) */}
       <div className="notch">
           <span>9:41</span>
           <span style={{textAlign: 'right'}}>100%</span>
@@ -32,19 +37,17 @@ function AppContent() {
 
       <div className="app-content">
         <Routes>
-          {/* 1. 로그인 페이지 (/login) 명시적으로 지정 */}
+          {/* 1. 로그인 및 초기 접속 설정 */}
           <Route 
             path="/login" 
             element={!isAuthenticated ? <Login /> : <Navigate to="/dashboard" />} 
           />
-          
-          {/* 2. 루트 접속 시: 로그인 안됐으면 /login으로 보냄 */}
           <Route 
             path="/" 
             element={<Navigate to={isAuthenticated ? "/dashboard" : "/login"} replace />} 
           />
           
-          {/* 3. 보호된 라우트들 */}
+          {/* 2. 보호된 라우트 (건우님 기능 + 새로운 UI) */}
           <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
           <Route path="/report" element={<PrivateRoute><Report /></PrivateRoute>} />
           <Route path="/report/detail" element={<PrivateRoute><ReportDetail /></PrivateRoute>} />
@@ -52,20 +55,23 @@ function AppContent() {
           <Route path="/about" element={<PrivateRoute><About /></PrivateRoute>} />
           <Route path="/support" element={<PrivateRoute><Support user={user} /></PrivateRoute>} />
           
-          {/* 4. 없는 주소는 대시보드로 */}
+          {/* 3. 예외 처리 */}
           <Route path="*" element={<Navigate to={isAuthenticated ? "/dashboard" : "/login"} replace />} />
         </Routes>
       </div>
 
+      {/* 로그인 상태일 때만 하단 내비게이션 표시 */}
       {isAuthenticated && <BottomNav />}
     </div>
   );
 }
 
+// 메인 App 컴포넌트
 function App() {
   return (
     <AuthProvider>
-      <ReportProvider> {/* ★ AuthProvider 안에, Router 밖에 추가 */}
+      <ReportProvider> 
+        {/* Router는 전체 앱에서 딱 하나만 있어야 합니다! */}
         <Router>
           <AppContent />
         </Router>

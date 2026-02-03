@@ -1,18 +1,22 @@
-import { Link, useLocation, useNavigate } from 'react-router-dom'; // ★ useNavigate 추가
-import { useAuth } from '../contexts/AuthContext'; 
+import React from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 
 function Sidebar() {
   const location = useLocation();
-  const navigate = useNavigate(); // ★ 선언
-  const { user, logout } = useAuth(); 
-  
+  const navigate = useNavigate();
+  const { user, logout } = useAuth(); // 유저 정보 및 로그아웃 함수 가져오기
+
+  // App.jsx 경로에 맞춘 메뉴 구성
   const menuItems = [
-    { path: '/dashboard', label: '신고센터', icon: '🚨' },
-    { path: '/support', label: '고객센터', icon: '💬' },
-    { path: '/mypage', label: '마이페이지', icon: '👤' }
+    { path: '/dashboard', label: '홈 / 대시보드', icon: '🏠' },
+    { path: '/report', label: '신고 관리', icon: '🚨' },
+    { path: '/chatbot', label: 'AI 법률 상담', icon: '💬' },
+    { path: '/support', label: '마이페이지', icon: '👤' },
+    { path: '/about', label: '서비스 정보', icon: 'ℹ️' }
   ];
 
-  // ★ 사이드바 로그아웃 함수
+  // 로그아웃 핸들러
   const handleSidebarLogout = async () => {
     try {
         await fetch('http://localhost:8000/auth/logout', { method: 'POST' });
@@ -20,17 +24,19 @@ function Sidebar() {
         console.error(e); 
     } finally {
         logout();
-        navigate('/login'); // 로그인 페이지로 강제 이동
+        navigate('/login'); // 로그인 페이지로 이동
     }
   };
 
   return (
     <div className="w-64 bg-gray-900 text-white flex flex-col h-full">
+      {/* 헤더 영역 */}
       <div className="p-6 border-b border-gray-700">
-        <h1 className="text-2xl font-bold">🚦 AI 교통신고</h1>
-        <p className="text-sm text-gray-400 mt-1">스마트 위반 감지 시스템</p>
+        <h1 className="text-2xl font-bold">🚦 Road Guardian</h1>
+        <p className="text-sm text-gray-400 mt-1">AI 교통 법규 위반 신고</p>
       </div>
       
+      {/* 메뉴 리스트 */}
       <nav className="flex-1 p-4">
         <ul className="space-y-2">
           {menuItems.map((item) => (
@@ -39,8 +45,8 @@ function Sidebar() {
                 to={item.path}
                 className={`flex items-center space-x-3 p-3 rounded-lg transition-all ${
                   location.pathname === item.path
-                    ? 'bg-white text-gray-900 shadow-lg'
-                    : 'hover:bg-gray-800'
+                    ? 'bg-white text-gray-900 shadow-lg font-bold'
+                    : 'hover:bg-gray-800 text-gray-300'
                 }`}
               >
                 <span className="text-2xl">{item.icon}</span>
@@ -51,16 +57,19 @@ function Sidebar() {
         </ul>
       </nav>
 
+      {/* 하단 유저 정보 및 로그아웃 */}
       <div className="p-4 border-t border-gray-700">
-        <div className="text-xs text-gray-500">
-          <p>로그인 사용자: <span className="text-white font-bold">{user?.nickname || '사용자'}</span></p>
+        <div className="text-sm">
+          <p className="text-gray-400 mb-1">로그인 사용자</p>
+          <div className="font-bold text-lg text-white mb-3">
+             {user ? `${user.nickname}님` : '게스트'}
+          </div>
           
-          {/* 로그아웃 버튼 연결 */}
           <button 
             onClick={handleSidebarLogout}
-            className="mt-2 text-blue-400 hover:text-blue-300 w-full text-left"
+            className="w-full text-left flex items-center gap-2 text-red-400 hover:text-red-300 transition-colors"
           >
-            로그아웃 →
+            <span>🚪</span> 로그아웃
           </button>
         </div>
       </div>
