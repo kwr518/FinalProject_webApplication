@@ -5,7 +5,7 @@ const ReportDetail = () => {
   const navigate = useNavigate();
   const location = useLocation();
   
-  // 목록(Report.jsx)에서 넘겨준 데이터 받기
+  // 목록에서 넘어온 데이터 (DB 데이터 포함)
   const { videoFile, videoSrc, reportId, ...prevData } = location.state || {};
   
   const [resultData, setResultData] = useState(prevData.plate ? prevData : null);
@@ -13,12 +13,11 @@ const ReportDetail = () => {
   const [progressLogs, setProgressLogs] = useState([]);
   const [showModal, setShowModal] = useState(false);
 
-  // 분석 로그 추가 함수
   const addLog = useCallback((message) => {
     setProgressLogs(prev => [...prev, message]);
   }, []);
 
-  // 목록 업데이트 (로컬 스토리지 동기화용)
+  // 목록 업데이트 (로컬 스토리지/전역 상태 동기화용)
   const updateReportList = useCallback((finalData, newStatus = 'complete') => {
     if (!reportId) return;
 
@@ -32,14 +31,13 @@ const ReportDetail = () => {
             ...finalData,
             title: finalData.violation || item.title,
             status: newStatus,
-            // 목록 표시용 데이터 업데이트
-            date: finalData.incidentDate || item.date,
+            date: finalData.date || item.date,
             plate: finalData.plate || item.plate,
-            // 상세 정보 업데이트
+            // ★ 상세 정보 업데이트
             incidentDate: finalData.incidentDate,
             incidentTime: finalData.incidentTime,
             aiDraft: finalData.aiDraft,
-            location: finalData.location || "위치 정보 없음"
+            location: finalData.location // ★ 위치 정보 저장
           };
         }
         return item;
@@ -48,7 +46,7 @@ const ReportDetail = () => {
     }
   }, [reportId]);
 
-  // 영상 분석 로직 (새 영상 업로드 시 자동 실행)
+  // 영상 분석 로직 (새 영상 업로드 시)
   const startAnalysis = useCallback(async () => {
     if (!videoFile) return;
 
@@ -61,16 +59,13 @@ const ReportDetail = () => {
 
       addLog("📤 영상 업로드 및 분석 요청...");
       
-      // 사용자 경험을 위한 가짜 로그 (실제 분석 시간 동안 보여줌)
       const timer1 = setTimeout(() => addLog("👀 AI가 영상을 프레임 단위로 쪼개는 중..."), 1500);
       const timer2 = setTimeout(() => addLog("🚗 차량 및 번호판 인식 시도 중..."), 3500);
       const timer3 = setTimeout(() => addLog("⚖️ 도로교통법 위반 여부 판단 중..."), 5500);
 
-      // ★ [통합] API 호출: credentials 포함하여 세션 유지
-      const res = await fetch('http://localhost:8000/api/analyze-direct', {
+      const res = await fetch('http://localhost:8000/api/analyze-video', {
         method: 'POST',
-        body: formData,
-        credentials: 'include' 
+        body: formData
       });
 
       clearTimeout(timer1); clearTimeout(timer2); clearTimeout(timer3);
@@ -83,19 +78,18 @@ const ReportDetail = () => {
         const rawTime = data.time || "";
         const [datePart, timePart] = rawTime.split(' ');
 
-        // ★ [통합] 최종 결과 데이터 구조화
         const finalResult = {
             plate: data.plate || "식별불가",
-            // 날짜/시간 분리 저장
+            // ★ 날짜/시간 분리 저장
             incidentDate: datePart || new Date().toISOString().split('T')[0],
             incidentTime: timePart || new Date().toTimeString().split(' ')[0],
             
             desc: data.result || "위반 사항이 감지되지 않았습니다.",
             violation: data.result ? data.result.split('(')[0].trim() : "위반 감지",
             
-            // AI 초안 및 위치 (새 분석 시 기본값)
-            aiDraft: data.aiDraft || "", // 서버에서 초안을 준다면 사용, 아니면 공란
-            location: data.location || "위치 정보 없음" 
+            // ★ AI 초안 및 위치 (새 분석 시 기본값)
+            aiDraft: "",
+            location: "위치 정보 없음" 
         };
         
         setResultData(finalResult);
@@ -124,21 +118,20 @@ const ReportDetail = () => {
     }
   }, [videoFile, addLog, updateReportList]);
 
-  // 컴포넌트 마운트 시 자동 실행
+  // 자동 실행
   useEffect(() => {
     if (videoFile && !resultData && !isAnalyzing) {
       startAnalysis();
     }
   }, [videoFile, resultData, isAnalyzing, startAnalysis]);
 
-  // 제출 버튼 핸들러
   const handleSubmit = () => {
+    // 실제 제출 로직
     if (resultData) {
         updateReportList(resultData, 'submitted'); 
     }
     alert('보고서 작성 페이지로 이동합니다. (구현 예정)');
     setShowModal(false);
-    // 여기서 실제 페이지 이동 로직 추가 가능
   };
 
   return (
@@ -166,7 +159,7 @@ const ReportDetail = () => {
           )}
         </div>
 
-        {/* 분석 로그 (분석 중일 때만 표시) */}
+        {/* 분석 로그 */}
         {isAnalyzing && (
             <div style={{ margin: '0 16px 16px 16px', padding: '16px', background: '#1E293B', borderRadius: '12px', fontFamily: 'monospace', fontSize: '12px', color: '#10B981', height: '120px', overflowY: 'auto' }}>
                 {progressLogs.map((log, i) => (
@@ -176,7 +169,7 @@ const ReportDetail = () => {
             </div>
         )}
 
-        {/* 분석 결과 표시 영역 */}
+        {/* 결과 표시 영역 */}
         {!isAnalyzing && resultData && (
             <>
                 <div style={{ padding: '0 16px 16px 16px' }}>
@@ -188,7 +181,7 @@ const ReportDetail = () => {
                     </div>
                   </div>
 
-                  {/* 위반 장소 */}
+                  {/* ★ [추가] 위반 장소 (위반 내용과 차량 번호 사이) */}
                   <div style={{ marginBottom: '16px' }}>
                     <div style={{ fontSize: '12px', fontWeight: '600', color: 'var(--text-primary)', marginBottom: '6px' }}>위반 장소</div>
                     <div style={{ padding: '12px', background: 'var(--bg-gray)', borderRadius: '12px', fontSize: '14px', color: 'var(--text-primary)' }}>

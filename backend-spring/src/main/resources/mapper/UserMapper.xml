@@ -3,34 +3,6 @@
 
 <mapper namespace="com.project1.backend_spring.mapper.UserMapper">
 
-<<<<<<< HEAD
-    <insert id="insertUser" parameterType="UserDTO">
-        INSERT INTO user (
-            user_name, user_number, email, 
-            login_social_id, safety_portal_id, safety_portal_pw
-        ) VALUES (
-            #{userName}, #{userNumber}, #{email}, 
-            #{loginSocialId}, #{safetyPortalId}, #{safetyPortalPw}
-        )
-    </insert>
-
-    <select id="findAllUsers" resultType="UserDTO">
-        SELECT * FROM user
-    </select>
-
-    <select id="findUserById" resultType="UserDTO">
-        SELECT * FROM user WHERE history_id = #{historyId}
-    </select>
-
-    <insert id="insertDevice" parameterType="DeviceDTO">
-        INSERT INTO Device (serial_no, history_id)
-        VALUES (#{serialNo}, #{historyId})
-    </insert>
-
-    <select id="findDevicesByUserId" resultType="DeviceDTO">
-        SELECT * FROM Device WHERE history_id = #{historyId}
-    </select>
-=======
     <insert id="insertUser" parameterType="com.project1.backend_spring.dto.UserDTO" useGeneratedKeys="true" keyProperty="historyId">
         INSERT INTO user (user_name, email, login_social_id, safety_portal_id, safety_portal_pw) 
         VALUES (#{userName}, #{email}, #{loginSocialId}, #{safetyPortalId}, #{safetyPortalPw})
@@ -116,6 +88,5 @@
     <delete id="deleteIncidentLogByUserId" parameterType="int"> DELETE FROM incident_log WHERE serial_no IN (SELECT serial_no FROM Device WHERE history_id = #{historyId}) </delete>
     <delete id="deleteDeviceByUserId" parameterType="int"> DELETE FROM Device WHERE history_id = #{historyId} </delete>
     <delete id="deleteUser" parameterType="int"> DELETE FROM user WHERE history_id = #{historyId} </delete>
->>>>>>> upstream/master
 
 </mapper>

@@ -1,12 +1,3 @@
-<<<<<<< HEAD
-import { Link, useLocation } from 'react-router-dom';
-
-function Sidebar() {
-  const location = useLocation();
-  
-  const menuItems = [
-    { path: '/', label: '신고센터', icon: '🚨' },
-=======
 import { Link, useLocation, useNavigate } from 'react-router-dom'; // ★ useNavigate 추가
 import { useAuth } from '../contexts/AuthContext'; 
 
@@ -17,15 +8,10 @@ function Sidebar() {
   
   const menuItems = [
     { path: '/dashboard', label: '신고센터', icon: '🚨' },
->>>>>>> upstream/master
     { path: '/support', label: '고객센터', icon: '💬' },
     { path: '/mypage', label: '마이페이지', icon: '👤' }
   ];
 
-<<<<<<< HEAD
-  return (
-    <div className="w-64 bg-gray-900 text-white flex flex-col">
-=======
   // ★ 사이드바 로그아웃 함수
   const handleSidebarLogout = async () => {
     try {
@@ -40,7 +26,6 @@ function Sidebar() {
 
   return (
     <div className="w-64 bg-gray-900 text-white flex flex-col h-full">
->>>>>>> upstream/master
       <div className="p-6 border-b border-gray-700">
         <h1 className="text-2xl font-bold">🚦 AI 교통신고</h1>
         <p className="text-sm text-gray-400 mt-1">스마트 위반 감지 시스템</p>
@@ -68,11 +53,6 @@ function Sidebar() {
 
       <div className="p-4 border-t border-gray-700">
         <div className="text-xs text-gray-500">
-<<<<<<< HEAD
-          <p>로그인 사용자: 관리자</p>
-          <button className="mt-2 text-blue-400 hover:text-blue-300">
-            로그아웃
-=======
           <p>로그인 사용자: <span className="text-white font-bold">{user?.nickname || '사용자'}</span></p>
           
           {/* 로그아웃 버튼 연결 */}
@@ -81,7 +61,6 @@ function Sidebar() {
             className="mt-2 text-blue-400 hover:text-blue-300 w-full text-left"
           >
             로그아웃 →
->>>>>>> upstream/master
           </button>
         </div>
       </div>
@@ -89,8 +68,4 @@ function Sidebar() {
   );
 }
 
-<<<<<<< HEAD
 export default Sidebar;
-=======
-export default Sidebar;
->>>>>>> upstream/master
