@@ -58,7 +58,8 @@
             r.incident_log AS incidentLog,
             r.is_submitted AS isSubmitted,
             r.description AS description,
-            l.serial_no AS serialNo,
+            
+            r.phone_number AS phoneNumber,   r.is_agreed AS isAgreed,         l.serial_no AS serialNo,
             l.incident_date AS incidentDate,
             l.incident_time AS incidentTime,
             l.video_url AS videoUrl,
@@ -87,9 +88,16 @@
     </delete>
 
     <update id="submitReport" parameterType="com.project1.backend_spring.dto.ReportDTO">
-        UPDATE report 
-        SET is_submitted = 1, reporter_phone = #{phoneNumber}, description = #{description}, is_agreed = #{isAgreed} 
-        WHERE report_id = #{reportId}
+        UPDATE report r
+        INNER JOIN incident_log l ON r.incident_log = l.incident_log
+        SET 
+            r.is_submitted = 0,                 r.phone_number = #{phoneNumber},    r.description = #{description}, 
+            r.is_agreed = #{isAgreed},          l.violation_type = #{violationType},
+            l.plate_no = #{plateNo},
+            l.location = #{location},
+            l.incident_date = #{incidentDate},
+            l.incident_time = #{incidentTime}
+        WHERE r.report_id = #{reportId}
     </update>
 
     <delete id="deleteReportByUserId"> DELETE FROM report WHERE history_id = #{historyId} </delete>

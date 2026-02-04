@@ -23,7 +23,7 @@ const BottomNav = () => {
       {/* 2. 신고 관리 */}
       <div className={`nav-item ${isActive('/report')}`} onClick={() => navigate('/report')}>
         <div className="nav-icon">📋</div>
-        <span>신고</span>
+        <span>영상 업로드</span>
       </div>
       
       {/* 3. AI 상담 */}
@@ -35,13 +35,13 @@ const BottomNav = () => {
       {/* 4. 서비스 정보 */}
       <div className={`nav-item ${isActive('/about')}`} onClick={() => navigate('/about')}>
         <div className="nav-icon">ℹ️</div>
-        <span>정보</span>
+        <span>신고서 작성</span>
       </div>
 
       {/* 5. 마이페이지 (Support) */}
       <div className={`nav-item ${isActive('/support')}`} onClick={() => navigate('/support')}>
         <div className="nav-icon">👤</div>
-        <span>마이</span>
+        <span>마이페이지</span>
       </div>
     </div>
   );
