@@ -1,56 +1,16 @@
 package com.project1.backend_spring.dto;
 
-<<<<<<< HEAD
-public class IncidentLogDTO {
-    private int incidentLog;        
-    private String serialNo;        
-    private String videoUrl;        
-    private String incidentDate;    
-    private String incidentTime;    
-    private String violationType;   
-    private String plateNo;         
-    private String aiDraft;         
-    private String location;        
-
-    // Getters and Setters
-    public int getIncidentLog() { return incidentLog; }
-    public void setIncidentLog(int incidentLog) { this.incidentLog = incidentLog; }
-
-    public String getSerialNo() { return serialNo; }
-    public void setSerialNo(String serialNo) { this.serialNo = serialNo; }
-
-    public String getVideoUrl() { return videoUrl; }
-    public void setVideoUrl(String videoUrl) { this.videoUrl = videoUrl; }
-
-    public String getIncidentDate() { return incidentDate; }
-    public void setIncidentDate(String incidentDate) { this.incidentDate = incidentDate; }
-
-    public String getIncidentTime() { return incidentTime; }
-    public void setIncidentTime(String incidentTime) { this.incidentTime = incidentTime; }
-
-    public String getViolationType() { return violationType; }
-    public void setViolationType(String violationType) { this.violationType = violationType; }
-
-    public String getPlateNo() { return plateNo; }
-    public void setPlateNo(String plateNo) { this.plateNo = plateNo; }
-
-    public String getAiDraft() { return aiDraft; }
-    public void setAiDraft(String aiDraft) { this.aiDraft = aiDraft; }
-
-    public String getLocation() { return location; }
-    public void setLocation(String location) { this.location = location; }
-=======
-import java.time.LocalDateTime;
-
 import lombok.Data;
 
-@Data
+@Data // ★ 중요: Getter, Setter 등을 자동으로 생성하여 코드를 다이어트해줍니다.
 public class IncidentLogDTO {
-    private int incidentLog;      // PK (컬럼명이 테이블명과 같음)
-    private String serialNo;      // FK
-    private String videoUrl;
-    private LocalDateTime time;   
-    private String locationGps;
-
->>>>>>> ui-partner/main
+    private int incidentLog;      // 로그 식별자 (PK)
+    private String serialNo;       // 기기 시리얼 번호
+    private String videoUrl;       // 영상 저장 경로
+    private String incidentDate;   // 발생 날짜
+    private String incidentTime;   // 발생 시각
+    private String violationType;  // 위반 종류 (예: 신호위반)
+    private String plateNo;        // 차량 번호
+    private String aiDraft;        // AI 분석 초안 내용
+    private String location;       // 발생 장소/위치 정보
 }

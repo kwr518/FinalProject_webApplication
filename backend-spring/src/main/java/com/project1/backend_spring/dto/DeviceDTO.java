@@ -1,22 +1,15 @@
 package com.project1.backend_spring.dto;
 
-<<<<<<< HEAD
-public class DeviceDTO {
-    private String serialNo; // PK (serial_no)
-    private int historyId;   // FK (history_id)
-
-    // Getters and Setters
-    public String getSerialNo() { return serialNo; }
-    public void setSerialNo(String serialNo) { this.serialNo = serialNo; }
-
-    public int getHistoryId() { return historyId; }
-    public void setHistoryId(int historyId) { this.historyId = historyId; }
-=======
 import lombok.Data;
 
-@Data
+@Data // ★ 중요: Getter, Setter, toString 등을 자동으로 생성해줍니다.
 public class DeviceDTO {
-    private String serialNo;  // PK
-    private int historyId;    // FK (User)
->>>>>>> ui-partner/main
+    // DB의 auto_increment 기본키와 매칭됩니다.
+    private int deviceId; 
+    
+    // 기기 고유 시리얼 번호
+    private String serialNo; 
+    
+    // 사용자 식별 ID (외래키)
+    private int historyId; 
 }
