@@ -2098,7 +2098,7 @@ body {
         background: #EFF6FF !important; /* 배경 흰색 */
         border: 1px solid #ffffff !important;
         margin-bottom: 0 !important;
-        height: 100px !important; /* 높이 고정 */
+        height: auto !important; /* 높이 고정 */
     }
 
     .quick-box .menu-icon {

@@ -26,7 +26,7 @@
     </insert>
 
     <select id="findDevicesByUserId" resultType="com.project1.backend_spring.dto.DeviceDTO">
-        SELECT device_id AS deviceId, serial_no AS serialNo, history_id AS historyId 
+        SELECT serial_no AS serialNo, history_id AS historyId 
         FROM Device WHERE history_id = #{historyId}
     </select>
 

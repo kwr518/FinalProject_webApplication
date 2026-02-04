@@ -2,18 +2,13 @@ package com.project1.backend_spring.dto;
 
 import lombok.Data;
 
-@Data // ★ 중요: Getter/Setter 자동 생성으로 컴파일 에러를 원천 차단합니다.
+@Data // ★ Lombok: Getter, Setter, toString, EqualsAndHashCode 등을 자동 생성합니다.
 public class UserDTO {
-    private int historyId;           // PK (사용자 고유 번호)
-    private String loginSocialId;    // 소셜 로그인 ID (예: kakao_12345)
-    private String nickname;         // 사용자 닉네임 (화면 표시용)
-    private String profileImage;     // 프로필 이미지 URL
-    private String email;            // 사용자 이메일
-    
-    // 안전신문고 연동 정보 (필요 시 사용)
-    private String safetyPortalId;   
-    private String safetyPortalPw;   
-    
-    // 기존에 쓰던 필드와 호환성을 위해 추가 (선택 사항)
-    private String userName;         
+    private int historyId;           // history_id (PK)
+    private String userName;         // user_name (이름)
+    private String userNumber;       // user_number (전화번호)
+    private String email;            // email (이메일)
+    private String loginSocialId;    // login_social_id (소셜 로그인 식별 ID)
+    private String safetyPortalId;   // safety_portal_id (안전신문고 ID)
+    private String safetyPortalPw;   // safety_portal_pw (안전신문고 PW)
 }
