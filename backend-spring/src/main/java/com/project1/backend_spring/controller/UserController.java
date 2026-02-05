@@ -1,11 +1,9 @@
 package com.project1.backend_spring.controller;
 
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.project1.backend_spring.dto.DeviceDTO;
 import com.project1.backend_spring.dto.UserDTO;
 import com.project1.backend_spring.mapper.UserMapper;
 
@@ -46,22 +44,8 @@ public class UserController {
         }
     }
 
-    // 2. 기기 (Device) 등록
-    @PostMapping("/device/register")
-    public ResponseEntity<String> registerDevice(@RequestBody DeviceDTO deviceDTO) {
-        try {
-            userMapper.insertDevice(deviceDTO);
-            return ResponseEntity.ok("Device Registered");
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body("Error");
-        }
-    }
-
-    // 3. 내 기기 조회
-    @GetMapping("/device/{userId}")
-    public ResponseEntity<List<DeviceDTO>> getMyDevices(@PathVariable int userId) {
-        return ResponseEntity.ok(userMapper.findDevicesByUserId(userId));
-    }
+    // ❌ [삭제됨] 기기 등록 (DeviceController로 이동함)
+    // ❌ [삭제됨] 내 기기 조회 (DeviceController로 이동함)
 
     // 4. 회원 탈퇴 (연쇄 삭제)
     @DeleteMapping("/user/{id}")

@@ -10,14 +10,14 @@ const Report = () => {
   const { user } = useAuth();
   const { reports, uploadVideo, removeReport } = useReport();
   
-  // [추가] 기기 저장 관련 상태
+  // 기기 저장 관련 상태
   const [myDevice, setMyDevice] = useState(null);
   const [saveToDevice, setSaveToDevice] = useState(false);
   
   const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 1024);
   const [selectedReportId, setSelectedReportId] = useState(null);
 
-  // [추가] 내 기기 정보 조회 로직
+  // 내 기기 정보 조회 로직
   useEffect(() => {
     if (!user || !user.history_id) return;
     const fetchMyDevice = async () => {
@@ -52,7 +52,6 @@ const Report = () => {
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
-    // [수정] 업로드 시 옵션 전달
     uploadVideo(file, saveToDevice, myDevice);
     e.target.value = ''; 
   };
@@ -68,10 +67,9 @@ const Report = () => {
 
   const selectedReport = reports.find(r => r.id === selectedReportId);
 
-  // PC용 상세 카드 (원본 유지 + 영상 연결 수정)
+  // PC용 상세 카드
   const ReportDetailCard = ({ report, onClose }) => {
     const [detailContent, setDetailContent] = useState(report.detailContent || report.aiDraft || '');
-    // [수정] 영상 연결
     const videoSource = report.videoSrc || report.video_url;
 
     const handleSubmit = () => {
@@ -130,109 +128,124 @@ const Report = () => {
     );
   };
 
+  // --- 리스트 아이템 스타일 (About.jsx와 통일) ---
+  const itemStyle = (isSelected, status) => ({
+    display: 'flex', 
+    alignItems: 'center',
+    gap: '16px',
+    padding: '16px', 
+    borderRadius: '16px',
+    border: isSelected ? '2px solid var(--primary-blue)' : '1px solid #f1f3f5',
+    backgroundColor: isSelected ? '#EFF6FF' : 'white',
+    boxShadow: isSelected ? '0 4px 12px rgba(37, 99, 235, 0.1)' : '0 2px 8px rgba(0,0,0,0.03)',
+    cursor: status === 'complete' ? 'pointer' : 'default',
+    opacity: status === 'processing' ? 0.8 : 1,
+    transition: 'all 0.2s ease',
+    width: '100%',
+    boxSizing: 'border-box'
+  });
+
   return (
-    <div className="screen active" style={{ display: 'flex', flexDirection: isDesktop ? 'row' : 'column', height: '100%', overflow: 'hidden' }}>
+    <div className="screen active" style={{ display: 'flex', flexDirection: isDesktop ? 'row' : 'column', height: '100%', overflow: 'hidden', background: '#f8f9fa' }}>
       
       {/* 왼쪽: 신고 목록 영역 */}
       <div style={{ width: isDesktop ? (selectedReportId ? '40%' : '100%') : '100%', display: 'flex', flexDirection: 'column', height: '100%', borderRight: isDesktop ? '1px solid var(--border-light)' : 'none', transition: 'width 0.3s ease' }}>
         
-        <div className="header">
-          <h1>📝 신고 관리</h1>
-          <p>{user ? `${user.nickname}님의 신고 이력` : '로딩 중...'}</p>
+        <div className="header" style={{ padding: '20px', textAlign: 'center', background: '#f8f9fa' }}>
+          <h1 style={{ fontSize: '24px', fontWeight: '800', margin: '0 0 5px 0' }}>📝 신고 관리</h1>
+          <p style={{ margin: 0, color: '#666', fontSize: '14px' }}>{user ? `${user.nickname}님의 신고 이력` : '로딩 중...'}</p>
         </div>
 
-        {/* 업로드 버튼 */}
-        <div onClick={() => fileInputRef.current.click()} style={{ padding: '24px', background: 'linear-gradient(135deg, #DBEAFE 0%, #EFF6FF 100%)', borderRadius: '16px', margin: '20px', border: '2px dashed var(--primary-blue)', cursor: 'pointer', textAlign: 'center', boxShadow: 'var(--shadow-sm)' }}>
-          <div style={{ fontSize: '32px', marginBottom: '8px' }}>📸</div>
-          <div style={{ fontWeight: 'bold', color: 'var(--primary-dark)', fontSize: '18px' }}>영상 자동 분석</div>
-          <div style={{ fontSize: '13px', color: 'var(--text-secondary)', marginTop: '4px' }}>AI가 위반 내용을 자동으로 분석합니다</div>
-        </div>
-
-        {/* [추가] 기기 저장 옵션 UI */}
-        {myDevice && (
-          <div style={{ padding: '0 20px', marginBottom: '10px', display:'flex', justifyContent:'center' }}>
-    {myDevice ? (
-        <label style={{ display:'flex', alignItems:'center', gap:'8px', fontSize:'13px', color:'var(--text-secondary)', cursor: 'pointer' }}>
-            <input type="checkbox" checked={saveToDevice} onChange={(e) => setSaveToDevice(e.target.checked)} />
-            <span>내 기기 <b>[{myDevice.serialNo}]</b> 에도 저장</span>
-        </label>
-    ) : (
-        /* 기기가 없을 때 출력되는 문구 */
-        <span style={{ fontSize:'12px', color:'var(--text-tertiary)' }}>※ 연동된 기기가 없습니다.</span>
-    )}
-</div>
-        )}
-
-        <input type="file" ref={fileInputRef} style={{ display: 'none' }} accept="video/*" onChange={handleFileChange} />
-
-        {/* ★ [수정] 리스트 영역: 세로 정렬(column) 강제, 상단 정렬(flex-start) */}
-        <div className="report-list" style={{ 
-            flex: 1, 
-            paddingBottom: isDesktop ? '20px' : '80px', 
-            overflowY: 'auto',
-            display: 'flex',       
-            flexDirection: 'column', // 세로 정렬
-            justifyContent: 'flex-start' // 위에서부터 쌓이게
-        }}>
-          {reports.length === 0 && (
-            <div style={{ textAlign:'center', marginTop:'40px', color:'var(--text-tertiary)' }}>
-              <div>📂</div>
-              <div style={{ marginTop: '8px' }}>저장된 신고 내역이 없습니다.</div>
+        {/* 컨텐츠 영역 (스크롤 가능) */}
+        <div style={{ flex: 1, overflowY: 'auto', padding: '0 20px 20px 20px', display: 'flex', flexDirection: 'column', gap: '15px' }}>
+            
+            {/* 업로드 버튼 */}
+            <div onClick={() => fileInputRef.current.click()} style={{ 
+                padding: '24px', 
+                background: 'white', 
+                borderRadius: '16px', 
+                border: '2px dashed #007AFF', 
+                cursor: 'pointer', 
+                textAlign: 'center', 
+                boxShadow: '0 2px 8px rgba(0,0,0,0.03)',
+                transition: 'background 0.2s'
+            }}>
+                <div style={{ fontSize: '32px', marginBottom: '8px' }}>📸</div>
+                <div style={{ fontWeight: 'bold', color: '#007AFF', fontSize: '18px' }}>영상 자동 분석</div>
+                <div style={{ fontSize: '13px', color: '#666', marginTop: '4px' }}>AI가 위반 내용을 자동으로 분석합니다</div>
             </div>
-          )}
-          
-          {reports.map((report) => (
-            <div 
-                key={report.id} 
-                className="report-item" 
-                onClick={() => handleReportClick(report)}
-                style={{ 
-                    /* ★ [수정] 박스 크기 고정 및 찌그러짐 방지 */
-                    display: 'flex', 
-                    flexDirection: 'row', 
-                    alignItems: 'center',
-                    gap: '16px',
-                    padding: '16px', 
-                    margin: '0 20px 12px 20px', 
-                    borderRadius: '12px',
-                    border: selectedReportId === report.id ? '2px solid var(--primary-blue)' : '1px solid var(--border-light)',
-                    background: selectedReportId === report.id ? 'var(--primary-light)' : 'var(--bg-primary)',
-                    cursor: report.status === 'complete' ? 'pointer' : 'default',
-                    opacity: report.status === 'processing' ? 0.8 : 1,
+
+            {/* 기기 저장 옵션 */}
+            {myDevice && (
+                <div style={{ display:'flex', justifyContent:'center', marginBottom: '5px' }}>
+                    <label style={{ display:'flex', alignItems:'center', gap:'8px', fontSize:'13px', color:'#666', cursor: 'pointer', background: 'white', padding: '8px 16px', borderRadius: '20px', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
+                        <input type="checkbox" checked={saveToDevice} onChange={(e) => setSaveToDevice(e.target.checked)} />
+                        <span>내 기기 <b>[{myDevice.serialNo}]</b> 에도 저장</span>
+                    </label>
+                </div>
+            )}
+
+            <input type="file" ref={fileInputRef} style={{ display: 'none' }} accept="video/*" onChange={handleFileChange} />
+
+            {/* 리스트 아이템들 */}
+            {reports.length === 0 && (
+                <div style={{ textAlign:'center', marginTop:'40px', color:'#999' }}>
+                <div style={{ fontSize: '40px', marginBottom: '10px' }}>📂</div>
+                <div>저장된 신고 내역이 없습니다.</div>
+                </div>
+            )}
+            
+            {reports.map((report) => (
+                <div 
+                    key={report.id} 
+                    onClick={() => handleReportClick(report)}
+                    style={itemStyle(selectedReportId === report.id, report.status)}
+                >
+                    {/* 상태 아이콘 */}
+                    <div style={{ 
+                        width: '50px', height: '50px', borderRadius: '12px', background: '#f1f3f5', 
+                        display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '24px', flexShrink: 0 
+                    }}>
+                        {report.status === 'processing' ? <div className="spinner"></div> : report.status === 'error' ? '⚠️' : '📸'}
+                    </div>
                     
-                    flexShrink: 0, /* ★ 억지로 줄어들지 않게 함 */
-                    height: 'auto', /* 높이는 내용물에 맞춤 */
-                    minHeight: '80px' /* 최소 높이 보장 */
-                }}
-            >
-              <div style={{ fontSize: '24px', width: '40px', textAlign: 'center' }}>
-                {report.status === 'processing' ? <div className="spinner"></div> : report.status === 'error' ? '⚠️' : '📸'}
-              </div>
-              
-              <div style={{ flex: 1 }}>
-                  <div style={{ fontWeight: 'bold', fontSize: '15px', color: report.status === 'processing' ? 'var(--primary-blue)' : 'var(--text-primary)' }}>
-                      {report.title}
-                  </div>
-                  <div style={{ fontSize: '12px', color: 'var(--text-secondary)', marginTop: '4px' }}>
-                    {report.status === 'processing' ? report.progressMsg : `${report.date || report.incidentDate} | ${report.plate}`}
-                  </div>
-              </div>
-              
-              {report.status !== 'processing' && (
-                <div onClick={(e) => handleDelete(e, report.id)} style={{ padding: '8px', color: 'var(--text-tertiary)', fontSize: '18px', cursor: 'pointer' }}>✖</div>
-              )}
-            </div>
-          ))}
+                    {/* 텍스트 정보 */}
+                    <div style={{ flex: 1 }}>
+                        <div style={{ fontWeight: '700', fontSize: '16px', color: report.status === 'processing' ? '#007AFF' : '#333', marginBottom: '4px' }}>
+                            {report.title}
+                        </div>
+                        <div style={{ fontSize: '13px', color: '#888' }}>
+                            {report.status === 'processing' ? report.progressMsg : `${report.date || report.incidentDate} | ${report.plate}`}
+                        </div>
+                    </div>
+                    
+                    {/* 삭제 버튼 */}
+                    {report.status !== 'processing' && (
+                        <div 
+                            onClick={(e) => handleDelete(e, report.id)} 
+                            style={{ 
+                                padding: '8px', color: '#adb5bd', fontSize: '18px', cursor: 'pointer', 
+                                display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '50%',
+                                transition: 'background 0.2s', width: '32px', height: '32px'
+                            }}
+                            onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#f1f3f5'}
+                            onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                        >
+                            ✖
+                        </div>
+                    )}
+                </div>
+            ))}
         </div>
       </div>
 
       {isDesktop && selectedReportId && selectedReport && (
-        <div style={{ width: '60%', height: '100%', background: 'var(--bg-secondary)', borderLeft: '1px solid var(--border-light)' }}>
+        <div style={{ width: '60%', height: '100%', background: 'white', borderLeft: '1px solid #eee' }}>
           <ReportDetailCard report={selectedReport} onClose={() => setSelectedReportId(null)} />
         </div>
       )}
 
-      <style>{`.spinner { width: 24px; height: 24px; border: 3px solid var(--border-light); border-top: 3px solid var(--primary-blue); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto; } @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }`}</style>
+      <style>{`.spinner { width: 24px; height: 24px; border: 3px solid #eee; border-top: 3px solid #007AFF; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto; } @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }`}</style>
     </div>
   );
 };

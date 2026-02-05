@@ -58,8 +58,9 @@
             r.incident_log AS incidentLog,
             r.is_submitted AS isSubmitted,
             r.description AS description,
-            
-            r.phone_number AS phoneNumber,   r.is_agreed AS isAgreed,         l.serial_no AS serialNo,
+            r.phone_number AS phoneNumber,   
+            r.is_agreed AS isAgreed,         
+            l.serial_no AS serialNo,
             l.incident_date AS incidentDate,
             l.incident_time AS incidentTime,
             l.video_url AS videoUrl,
@@ -107,5 +108,4 @@
     </delete>
     <delete id="deleteDeviceByUserId"> DELETE FROM Device WHERE history_id = #{historyId} </delete>
     <delete id="deleteUser"> DELETE FROM user WHERE history_id = #{historyId} </delete>
-
 </mapper>

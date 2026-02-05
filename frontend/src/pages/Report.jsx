@@ -8,7 +8,7 @@ const Report = () => {
   const navigate = useNavigate();
   
   const { user } = useAuth();
-  const { reports, uploadVideo, removeReport } = useReport();
+  const { reports, setReports, uploadVideo, removeReport } = useReport();
   
   // 기기 저장 관련 상태
   const [myDevice, setMyDevice] = useState(null);
@@ -34,6 +34,40 @@ const Report = () => {
     };
     fetchMyDevice();
   }, [user]);
+
+  // DB에서 라즈베리파이/웹 신고 내역 가져오기 
+  useEffect(() => {
+    if (!user || !user.history_id) return;
+
+    const fetchReportsFromDB = async () => {
+      try {
+        const res = await fetch(`http://localhost:8080/api/reports/${user.history_id}`);
+        if (res.ok) {
+          const dbData = await res.json();
+          
+          // DB 데이터를 현재 프론트엔드 리스트 형식에 맞춰 변환
+          const formattedReports = dbData.map(item => ({
+            id: item.reportId,
+            title: item.violationType,
+            plate: item.plateNo || "식별불가",
+            location: item.location || "위치 정보 없음",
+            incidentDate: item.incidentDate,
+            incidentTime: item.incidentTime,
+            aiDraft: item.aiDraft || item.description,
+            video_url: item.videoUrl, // S3 영상 주소
+            status: 'complete' // DB에 있는 건 분석 완료 상태
+          }));
+
+          // 가져온 데이터를 리스트에 적용
+          setReports(formattedReports);
+        }
+      } catch (err) { 
+        console.error("신고 내역 로딩 실패:", err); 
+      }
+    };
+
+    fetchReportsFromDB();
+  }, [user, setReports]);
 
   useEffect(() => {
     const handleResize = () => setIsDesktop(window.innerWidth >= 1024);
@@ -99,6 +133,13 @@ const Report = () => {
           <div style={{ marginBottom: '16px' }}>
             <div style={{ fontSize: '13px', fontWeight: '600', color: 'var(--text-secondary)', marginBottom: '8px' }}>위반 내용</div>
             <div style={{ padding: '16px', background: 'var(--bg-secondary)', borderRadius: '12px', fontSize: '16px', fontWeight: 'bold' }}>{report.title}</div>
+          </div>
+
+          <div style={{ marginBottom: '16px' }}>
+            <div style={{ fontSize: '13px', fontWeight: '600', color: 'var(--text-secondary)', marginBottom: '8px' }}>위반 장소</div>
+            <div style={{ padding: '16px', background: 'var(--bg-secondary)', borderRadius: '12px', fontSize: '16px', fontWeight: 'bold' }}>
+                {report.location || "위치 정보 없음"}
+            </div>
           </div>
 
           <div style={{ marginBottom: '16px' }}>

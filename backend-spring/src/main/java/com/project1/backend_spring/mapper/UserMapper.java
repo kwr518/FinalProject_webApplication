@@ -65,4 +65,5 @@ public interface UserMapper {
     void deleteIncidentLogByUserId(int historyId);
     void deleteDeviceByUserId(int historyId);
     void deleteUser(int historyId);
+    void deleteDevice(@Param("historyId") int historyId, @Param("serialNo") String serialNo);
 }
