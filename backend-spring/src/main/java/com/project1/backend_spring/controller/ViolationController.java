@@ -26,7 +26,7 @@ public class ViolationController {
     @Autowired
     private UserMapper userMapper;
 
-    private static final String PYTHON_BASE_URL = "http://localhost:8000";
+    private static final String PYTHON_BASE_URL = "http://192.168.0.40:8000";
 
     // 1. 영상 업로드
     @PostMapping("/upload-video")

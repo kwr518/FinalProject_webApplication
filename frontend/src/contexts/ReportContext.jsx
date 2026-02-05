@@ -13,7 +13,7 @@ export const ReportProvider = ({ children }) => {
   const fetchReports = useCallback(async () => {
     if (!user || !user.history_id) return;
     try {
-      const res = await fetch(`http://localhost:8080/api/my-reports?userId=${user.history_id}`);
+      const res = await fetch(`http://192.168.0.40:8080/api/my-reports?userId=${user.history_id}`);
       if (res.ok) {
         let dbData = await res.json();
         
@@ -81,7 +81,7 @@ export const ReportProvider = ({ children }) => {
       formData.append("file", uploadFile);
       formData.append("serial_no", targetSerial); 
 
-      const res = await fetch('http://localhost:8000/api/analyze-video', {
+      const res = await fetch('http://192.168.0.40:8000/api/analyze-video', {
         method: 'POST',
         body: formData
       });
@@ -108,7 +108,7 @@ export const ReportProvider = ({ children }) => {
   // 3. 삭제
   const removeReport = async (id) => {
     try {
-      const res = await fetch(`http://localhost:8080/api/reports/${id}`, { method: 'DELETE' });
+      const res = await fetch(`http://192.168.0.40:8080/api/reports/${id}`, { method: 'DELETE' });
       if (res.ok) {
         setReports(prev => prev.filter(item => item.id !== id));
       }

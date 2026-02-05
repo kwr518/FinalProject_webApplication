@@ -58,9 +58,9 @@ npm start
 
 ## 4. 접속
 
-- React 앱: http://localhost:3000
-- FastAPI 백엔드: http://localhost:8000
-- FastAPI 문서: http://localhost:8000/docs
+- React 앱: http://192.168.0.40:3000
+- FastAPI 백엔드: http://192.168.0.40:8000
+- FastAPI 문서: http://192.168.0.40:8000/docs
 
 ## 5. 주요 기능
 

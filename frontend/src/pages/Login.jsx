@@ -8,7 +8,7 @@ const Login = () => {
 
   // 1. 카카오 로그인 핸들러 (기존 유지)
   const handleKakaoLogin = () => {
-    window.location.href = 'http://localhost:8000/auth/kakao/login';
+    window.location.href = 'http://192.168.0.40:8000/auth/kakao/login';
   };
 
   // 2. 구글 로그인 콜백 핸들러 (기존 유지)
@@ -16,7 +16,7 @@ const Login = () => {
     try {
       console.log("구글 토큰 수신:", response.credential);
 
-      const res = await fetch('http://localhost:8000/api/auth/google', {
+      const res = await fetch('http://192.168.0.40:8000/api/auth/google', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ token: response.credential }),

@@ -17,8 +17,8 @@ echo ================================
 echo 서버 실행 완료!
 echo ================================
 echo.
-echo FastAPI: http://localhost:8000
-echo React: http://localhost:3000
+echo FastAPI: http://192.168.0.40:8000
+echo React: http://192.168.0.40:3000
 echo.
 echo 종료하려면 각 터미널 창을 닫으세요.
 echo.

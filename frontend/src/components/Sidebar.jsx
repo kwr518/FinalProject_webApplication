@@ -19,7 +19,7 @@ function Sidebar() {
   // 로그아웃 핸들러
   const handleSidebarLogout = async () => {
     try {
-        await fetch('http://localhost:8000/auth/logout', { method: 'POST' });
+        await fetch('http://192.168.0.40:8000/auth/logout', { method: 'POST' });
     } catch(e) { 
         console.error(e); 
     } finally {

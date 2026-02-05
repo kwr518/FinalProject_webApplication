@@ -35,7 +35,7 @@ const Dashboard = () => {
     const fetchMyStats = async () => {
       try {
         // 자바 서버에서 내 신고 내역 가져오기
-        const res = await fetch(`http://localhost:8080/api/my-reports?userId=${user.history_id}`);
+        const res = await fetch(`http://192.168.0.40:8080/api/my-reports?userId=${user.history_id}`);
         if (res.ok) {
           const reports = await res.json();
           

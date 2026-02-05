@@ -18,7 +18,7 @@ function App() {
   useEffect(() => {
     const checkLoginStatus = async () => {
       try {
-        const res = await fetch('http://localhost:8000/api/auth/check', {
+        const res = await fetch('http://192.168.0.40:8000/api/auth/check', {
           credentials: 'include' 
         });
         const data = await res.json();

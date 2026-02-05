@@ -34,7 +34,7 @@ const CustomerService = () => {
 
     try {
       // ★ 핵심: 파이썬 AI 서버로 질문 전송
-      const res = await fetch('http://localhost:8000/api/ask', {
+      const res = await fetch('http://192.168.0.40:8000/api/ask', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ question: messageToSend })

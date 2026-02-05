@@ -22,7 +22,7 @@ const Report = () => {
     if (!user || !user.history_id) return;
     const fetchMyDevice = async () => {
       try {
-        const res = await fetch(`http://localhost:8080/api/device/${user.history_id}`);
+        const res = await fetch(`http://192.168.0.40:8080/api/device/${user.history_id}`);
         if (res.ok) {
           const devices = await res.json();
           if (devices && devices.length > 0) {
@@ -41,7 +41,7 @@ const Report = () => {
 
     const fetchReportsFromDB = async () => {
       try {
-        const res = await fetch(`http://localhost:8080/api/reports/${user.history_id}`);
+        const res = await fetch(`http://192.168.0.40:8080/api/reports/${user.history_id}`);
         if (res.ok) {
           const dbData = await res.json();
           

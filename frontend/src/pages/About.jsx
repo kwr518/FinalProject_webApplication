@@ -14,8 +14,8 @@ const About = () => {
   useEffect(() => {
     const fetchReports = async () => {
       try {
-        const userId = 3; 
-        const response = await axios.get(`http://localhost:8080/api/my-reports?userId=${userId}`);
+        const userId = 2; 
+        const response = await axios.get(`http://192.168.0.40:8080/api/my-reports?userId=${userId}`);
         setReports(response.data);
       } catch (error) {
         console.error("조회 실패:", error);
@@ -33,7 +33,7 @@ const About = () => {
   const handleTempSave = async (formData) => {
     if (!selectedReport) return;
     try {
-      await axios.put(`http://localhost:8080/api/reports/${selectedReport.reportId}/submit`, {
+      await axios.put(`http://192.168.0.40:8080/api/reports/${selectedReport.reportId}/submit`, {
         description: formData.content,
         phoneNumber: formData.phone,
         isAgreed: formData.agreed,
@@ -153,7 +153,7 @@ const About = () => {
               <div style={thumbnailStyle}>
                 {item.videoUrl ? (
                    <video 
-                     src={item.videoUrl.startsWith('http') ? item.videoUrl : `http://localhost:8080/${item.videoUrl}`} 
+                     src={item.videoUrl.startsWith('http') ? item.videoUrl : `http://192.168.0.40:8080/${item.videoUrl}`} 
                      style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
                    />
                 ) : (
@@ -263,7 +263,7 @@ const DetailView = ({ report, onBack, onTempSave, onAutoReport }) => {
 
   const videoSrc = report.videoUrl && report.videoUrl.startsWith('http') 
     ? report.videoUrl 
-    : `http://localhost:8080/${report.videoUrl}`;
+    : `http://192.168.0.40:8080/${report.videoUrl}`;
 
   return (
     <div className="screen active" style={{ backgroundColor: '#f8f9fa', paddingBottom: '80px', minHeight: '100vh' }}>

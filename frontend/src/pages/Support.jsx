@@ -23,7 +23,7 @@ const Support = () => {
     console.log(`📡 [fetchMyDevice] 기기 조회 시작! 타겟 ID: ${targetId}`);
 
     try {
-        const res = await fetch(`http://localhost:8080/api/device/${targetId}`);
+        const res = await fetch(`http://192.168.0.40:8080/api/device/${targetId}`);
         
         if (res.ok) {
             const data = await res.json();
@@ -69,7 +69,7 @@ const Support = () => {
   // 로그아웃
   const handleLogout = async () => {
     try {
-      await fetch('http://localhost:8000/auth/logout', { method: 'POST' });
+      await fetch('http://192.168.0.40:8000/auth/logout', { method: 'POST' });
     } catch (error) { console.error(error); } 
     finally {
       logout(); 
@@ -84,7 +84,7 @@ const Support = () => {
     if (!targetId) return;
 
     try {
-        const res = await fetch(`http://localhost:8080/api/user/${targetId}`, { method: 'DELETE' });
+        const res = await fetch(`http://192.168.0.40:8080/api/user/${targetId}`, { method: 'DELETE' });
         if (res.ok) {
             alert("탈퇴 완료");
             logout(); 
@@ -103,7 +103,7 @@ const Support = () => {
     if (!targetId) return alert("로그인 정보가 없습니다.");
 
     try {
-      const res = await fetch('http://localhost:8080/api/device/register', {
+      const res = await fetch('http://192.168.0.40:8080/api/device/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ serialNo: serialInput, historyId: targetId })

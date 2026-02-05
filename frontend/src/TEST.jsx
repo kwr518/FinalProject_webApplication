@@ -7,8 +7,8 @@ const AiMonitor = () => {
   // 1. 데이터 가져오기 함수 (FastAPI 연동)
   const fetchLogs = async () => {
     try {
-      // Python 서버 주소 (ngrok 주소 혹은 localhost)
-      const response = await fetch('http://localhost:8000/logs'); 
+      // Python 서버 주소 (ngrok 주소 혹은 192.168.0.40)
+      const response = await fetch('http://192.168.0.40:8000/logs'); 
       const data = await response.json();
       
       // 최신순으로 정렬 (필요시)
@@ -71,7 +71,7 @@ const AiMonitor = () => {
                 <div className="video-wrapper">
                   <video controls muted autoPlay loop>
                     {/* Python 서버에서 비디오 파일 서빙 */}
-                    <source src={`http://localhost:8000${log.video_url}`} type="video/mp4" />
+                    <source src={`http://192.168.0.40:8000${log.video_url}`} type="video/mp4" />
                   </video>
                 </div>
               )}

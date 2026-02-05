@@ -26,7 +26,7 @@ export const AuthProvider = ({ children }) => {
 
         // 2. 백엔드 서버에 진짜 세션이 살아있는지 확인 (보안용)
         // 주의: main.py 설정에 따라 주소가 /api/auth/check 또는 /auth/check 일 수 있음
-        const res = await fetch('http://localhost:8000/api/auth/check', {
+        const res = await fetch('http://192.168.0.40:8000/api/auth/check', {
           credentials: 'include' // 세션 쿠키 전달 필수
         });
         
@@ -80,7 +80,7 @@ export const AuthProvider = ({ children }) => {
 
         // 2. 백엔드 로그아웃 API 호출 (카카오 토큰 만료 및 세션 삭제)
         // 사용자님 auth.py에 정의된 주소: /auth/logout
-        await fetch('http://localhost:8000/auth/logout', { 
+        await fetch('http://192.168.0.40:8000/auth/logout', { 
             method: 'POST', 
             credentials: 'include' 
         });
